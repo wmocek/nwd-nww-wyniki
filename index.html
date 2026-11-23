@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Własności liczb naturalnych – nauka i testy</title>
+<style>
+:root{
+  --orange:#ee7f22; --orange2:#f6a33b; --orange-d:#c85f0e;
+  --cream:#fff8ec; --sand:#f7dcae; --ink:#2b2b33; --muted:#6c6f7b;
+  --green:#5fa83a; --red:#e0533d; --blue:#2f8fd1; --violet:#8a5cc4; --yellow:#ffd54f;
+  --card:#ffffff; --line:#eadfcd; --radius:18px;
+  --shadow:0 6px 22px rgba(120,80,20,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--cream);font-size:18px;line-height:1.55}
+button,input{font:inherit}
+a{color:var(--orange-d)}
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,248,236,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--orange-d);text-decoration:none;margin-right:auto}
+.logo-badge{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--orange2),var(--orange-d));color:#fff;display:grid;place-items:center;font-size:20px;box-shadow:0 3px 8px rgba(200,95,14,.3)}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+nav.tabs a{padding:7px 13px;border-radius:999px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px;border:1.5px solid transparent;transition:.2s}
+nav.tabs a:hover{background:#fff;border-color:var(--line)}
+nav.tabs a.on{background:var(--orange);color:#fff;box-shadow:0 3px 10px rgba(238,127,34,.35)}
+main{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
+section.page{display:none;animation:fade .35s ease}
+section.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* ---------- book band ---------- */
+.band{position:relative;margin:6px -16px 26px;padding:26px 28px 22px;color:#fff;text-align:right;
+  background:linear-gradient(100deg,#f8b25a 0%,var(--orange) 35%,var(--orange-d) 100%);
+  clip-path:polygon(0 18%,100% 0,100% 100%,0 86%);}
+.band h1{margin:0;font-size:clamp(30px,5vw,46px);letter-spacing:.5px;text-shadow:0 2px 0 rgba(0,0,0,.12);font-weight:800}
+.band .sub{opacity:.95;font-weight:600;font-size:15px}
+.footer-band{margin:40px -16px 0;background:var(--sand);padding:12px 28px;display:flex;justify-content:space-between;color:#7a5a2a;font-size:14px;letter-spacing:1px;text-transform:uppercase}
+/* ---------- blocks ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin:18px 0;border:1px solid #f1e6d4}
+.ex-label{font-variant:small-caps;letter-spacing:1px;color:#8b8f99;font-weight:700;font-family:Georgia,"Times New Roman",serif;font-size:19px}
+.ex{background:#fff;border-left:5px solid #c9ced8;border-radius:12px;padding:14px 18px;margin:16px 0;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.ex p{margin:.3em 0}
+.theory{background:linear-gradient(180deg,#fff1dc,#ffe7c4);border-radius:var(--radius);padding:18px 22px;margin:20px 0;border:2px solid #f6c98a;position:relative}
+.theory::before{content:"📌";position:absolute;left:-12px;top:-14px;font-size:26px}
+.theory b.key,.key{color:var(--orange-d)}
+.note{background:#eef6ff;border-radius:14px;padding:12px 18px;border:1.5px dashed #9cc7ec;margin:16px 0}
+.ciek{border:2px solid #d9cbb3;border-radius:6px 22px 6px 22px;padding:14px 18px;background:#fffdf8;margin:20px 0}
+.ciek h4{margin:0 0 6px;color:var(--orange-d);font-family:"Comic Sans MS","Chalkboard SE",cursive;font-weight:600;font-size:20px}
+.zad-head{display:inline-block;background:var(--orange);color:#fff;font-weight:800;letter-spacing:2px;padding:8px 26px 8px 18px;margin:30px 0 6px -16px;clip-path:polygon(0 0,100% 0,92% 100%,0 100%);font-size:20px}
+.zad{padding:12px 0 14px;border-bottom:1px dashed var(--line)}
+.zad .nr{font-weight:800;color:var(--orange);font-size:22px;margin-right:4px}
+.zad .star::before{content:"✸";color:#f2b233;margin-right:2px}
+.super{margin-top:28px;background:linear-gradient(135deg,#fff3d6,#ffe1a8);border-radius:var(--radius);padding:18px 22px;border:2px solid #f3c060;position:relative}
+.super .tag{position:absolute;top:-16px;left:18px;background:#fff;border:2px solid #f3c060;border-radius:999px;padding:2px 14px;font-weight:800;color:var(--orange-d);font-size:15px}
+.puzzles{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.pz{width:190px;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transform:rotate(var(--r,0deg));transition:.25s;cursor:default}
+.pz:hover{transform:rotate(0) scale(1.04)}
+.pz .t{padding:10px 12px;font-weight:700;font-size:15px;position:relative}
+.pz .t span{position:absolute;right:10px;bottom:4px;font-size:30px;opacity:.35;font-weight:900}
+.pz .b{padding:10px 12px;font-size:15px;border-top:3px dashed rgba(255,255,255,.9)}
+.pz.g .t,.pz.g .b{background:#e2f2c9;color:#3c6b1d}
+.pz.o .t,.pz.o .b{background:#fde0c4;color:#9b4d0e}
+.pz.bl .t,.pz.bl .b{background:#d4e9fb;color:#1d5c8c}
+.pz.y .t,.pz.y .b{background:#fff2b3;color:#7a6200}
+.pz.v .t,.pz.v .b{background:#eadcff;color:#5b3592}
+video{width:100%;border-radius:14px;background:#1b1f2a;display:block;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.vid-cap{font-size:14px;color:var(--muted);margin-top:6px;text-align:center}
+.hl{background:#ffe16b;border-radius:4px;padding:0 4px;font-weight:700}
+.mono{font-variant-numeric:tabular-nums}
+/* ---------- inputs & checks ---------- */
+input.a{width:90px;padding:5px 9px;border:2px solid #d9d2c4;border-radius:10px;background:#fffefa;text-align:center;transition:.2s}
+input.a.w{width:230px;text-align:left}
+input.a.xw{width:min(420px,100%);text-align:left}
+input.a:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 4px rgba(238,127,34,.18)}
+input.a.ok,.chip.ok-sel{border-color:var(--green)!important;background:#ecf8e3}
+input.a.bad{border-color:var(--red)!important;background:#fdeceb;animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.btn{border:none;border-radius:12px;padding:8px 16px;font-weight:700;cursor:pointer;transition:.15s;background:var(--orange);color:#fff;box-shadow:0 3px 0 var(--orange-d)}
+.btn:hover{filter:brightness(1.05)}.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--orange-d)}
+.btn.sec{background:#fff;color:var(--orange-d);border:2px solid #f1c79a;box-shadow:none}
+.btn.big{padding:13px 26px;font-size:19px;border-radius:14px}
+.btn.green{background:var(--green);box-shadow:0 3px 0 #3f7f22}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.fb{font-weight:700;margin-left:6px}
+.fb.ok{color:var(--green)}.fb.bad{color:var(--red)}
+.sol{display:none;background:#f3f7ee;border-radius:10px;padding:8px 14px;margin-top:8px;border-left:4px solid var(--green)}
+.sol.show{display:block;animation:fade .3s}
+.chip{display:inline-block;min-width:46px;text-align:center;padding:6px 12px;margin:4px;border-radius:12px;border:2px solid #d9d2c4;background:#fff;cursor:pointer;user-select:none;font-weight:700;transition:.15s}
+.chip:hover{border-color:var(--orange2)}
+.chip.sel{background:#fff0dd;border-color:var(--orange);color:var(--orange-d);transform:translateY(-2px)}
+.chip.good{background:#e5f6d9;border-color:var(--green);color:#2f6d12}
+.chip.wrong{background:#fde2df;border-color:var(--red);color:#a02a19}
+.chip.miss{border-style:dashed;border-color:var(--green)}
+.tf{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}
+.tf .circ{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;border:2px solid #8b8f99;font-size:14px;font-weight:700;color:#555;flex:none}
+.tf .txt{flex:1;min-width:220px}
+.choose .chip{min-width:70px}
+table.tb{border-collapse:collapse;margin:10px 0;font-size:16px}
+table.tb td,table.tb th{border:1.5px solid #cfc6b6;padding:6px 8px;text-align:center}
+table.tb th{background:#fbf3e4;font-weight:600}
+table.tb td input.a{width:64px;padding:3px 4px}
+.mults{font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.mults span{min-width:44px;text-align:center;padding:3px 6px;border-radius:8px;background:#f5efe5;transition:.3s}
+.mults span.c{background:var(--yellow);font-weight:800;transform:scale(1.08)}
+.mults span.first{outline:3px solid var(--orange);}
+.pairs{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.pair{display:flex;align-items:center;gap:10px;animation:fade .4s both}
+.pair .bx{width:var(--w);height:var(--h);background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:10px 10px;background-color:var(--blue);border-radius:3px}
+.sieve{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:520px}
+.sieve div{aspect-ratio:1;display:grid;place-items:center;border-radius:8px;background:#fff;border:1.5px solid #e4dccd;font-weight:700;font-size:15px;cursor:pointer;transition:.25s}
+.sieve div.x{background:#eee;color:#bbb;text-decoration:line-through;border-color:#eee}
+.sieve div.p{background:var(--yellow);border-color:#e0b400;color:#5a4500;transform:scale(1.05)}
+.sieve div.one{background:#ddd;color:#999}
+.primes1000{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:2px;background:#fff1cf;border-radius:12px;padding:10px;font-size:14px;font-variant-numeric:tabular-nums;text-align:right;max-height:330px;overflow:auto}
+.ladder{font-variant-numeric:tabular-nums;font-size:22px;display:inline-grid;grid-template-columns:auto auto;margin:8px 0}
+.ladder div{padding:2px 12px;animation:fade .35s both}
+.ladder div:nth-child(odd){text-align:right;border-right:3px solid var(--ink)}
+.ladder div:nth-child(even){color:var(--orange-d);font-weight:800}
+.lockdoor{display:flex;flex-wrap:wrap;gap:8px}
+svg text{font-family:inherit}
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;margin:10px 0 20px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.hero h2{font-size:clamp(28px,4.5vw,42px);margin:0 0 10px;line-height:1.15}
+.hero h2 span{color:var(--orange)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.tile{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);text-decoration:none;color:var(--ink);border:2px solid transparent;transition:.2s;display:block}
+.tile:hover{transform:translateY(-4px);border-color:var(--orange2)}
+.tile .ic{font-size:34px}
+.tile h3{margin:6px 0 4px}
+.tile p{margin:0;color:var(--muted);font-size:15px}
+.tile .best{margin-top:8px;font-size:14px;font-weight:700;color:var(--green)}
+.floaty{font-size:64px;text-align:center;line-height:1.2}
+.floaty span{display:inline-block;animation:bob 3s ease-in-out infinite}
+.floaty span:nth-child(2){animation-delay:.4s}.floaty span:nth-child(3){animation-delay:.8s}.floaty span:nth-child(4){animation-delay:1.2s}
+@keyframes bob{50%{transform:translateY(-12px) rotate(-6deg)}}
+/* ---------- tests ---------- */
+.tests-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.tcard{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border-top:6px solid var(--c,var(--orange))}
+.tcard h3{margin:4px 0}
+.tcard p{color:var(--muted);font-size:15px;margin:4px 0 12px}
+.quiz{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:22px 26px;max-width:760px;margin:10px auto}
+.progress{height:12px;background:#f3ead9;border-radius:99px;overflow:hidden;margin:8px 0 18px}
+.progress div{height:100%;background:linear-gradient(90deg,var(--orange2),var(--orange));border-radius:99px;transition:width .4s}
+.qtext{font-size:22px;font-weight:600;margin:6px 0 16px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.opts{grid-template-columns:1fr}}
+.opt{padding:14px 16px;border-radius:14px;border:2.5px solid #e3dbcc;background:#fffdf8;cursor:pointer;font-size:20px;font-weight:700;text-align:center;transition:.15s}
+.opt:hover{border-color:var(--orange2);transform:translateY(-2px)}
+.opt.sel{border-color:var(--orange);background:#fff0dd}
+.opt.good{border-color:var(--green);background:#e5f6d9}
+.opt.wrong{border-color:var(--red);background:#fde2df}
+.qin{font-size:24px;width:180px;padding:10px 14px;border-radius:14px;border:2.5px solid #e3dbcc;text-align:center}
+.qin:focus{outline:none;border-color:var(--orange)}
+.expl{margin-top:16px;padding:12px 16px;border-radius:14px;animation:fade .3s}
+.expl.ok{background:#eaf7e0;border-left:6px solid var(--green)}
+.expl.bad{background:#fdeceb;border-left:6px solid var(--red)}
+.score-big{font-size:64px;font-weight:900;color:var(--orange);text-align:center;line-height:1}
+.stars{font-size:40px;text-align:center;letter-spacing:6px}
+.grade{text-align:center;font-size:20px;font-weight:700;margin:6px 0 16px}
+.review{margin-top:16px}
+.review .it{padding:10px 14px;border-radius:12px;margin:8px 0;background:#fafafa;border-left:5px solid #ccc;font-size:16px}
+.review .it.ok{border-color:var(--green)}.review .it.bad{border-color:var(--red);background:#fff6f5}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.pdfbox{display:flex;gap:16px;align-items:center;background:#fff;border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin:20px 0;border:2px dashed #f1c79a}
+.small{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-in">
+  <a class="logo" href="#start"><span class="logo-badge">÷</span>Liczby naturalne</a>
+  <nav class="tabs" id="tabs">
+    <a href="#start">Start</a>
+    <a href="#wiel">Wielokrotności</a>
+    <a href="#dziel">Dzielniki</a>
+    <a href="#cechy">Cechy podzielności</a>
+    <a href="#pierwsze">Liczby pierwsze</a>
+    <a href="#rozklad">Rozkład ★</a>
+    <a href="#testy">Testy</a>
+  </nav>
+</div></div>
+
+<main>
+<!-- ======================= START ======================= -->
+<section class="page" id="p-start">
+  <div class="hero">
+    <div>
+      <h2>Własności <span>liczb naturalnych</span></h2>
+      <p>Cztery lekcje po kolei, tak jak w podręczniku: <b>wielokrotności</b>, <b>dzielniki</b>, <b>cechy podzielności</b> i <b>liczby pierwsze</b>. Do tego lekcja dodatkowa o rozkładzie na czynniki pierwsze (tak jak w klasie 5 w podręczniku Nowej Ery „Matematyka z kluczem”).</p>
+      <p>W każdej lekcji: krótka teoria, animacja, ćwiczenia z natychmiastowym sprawdzaniem i zadania. Na końcu <b>testy</b> – za każdym razem inne!</p>
+      <div class="row"><a class="btn big" href="#wiel">Zaczynamy ▸</a><a class="btn big sec" href="#testy">Od razu do testów</a></div>
+    </div>
+    <div class="floaty"><span>6</span><span>÷</span><span>3</span><span>✓</span></div>
+  </div>
+  <div class="tiles" id="homeTiles"></div>
+  <div class="pdfbox">
+    <div style="font-size:40px">🖨️</div>
+    <div><b>Wersja do pisania</b> – <a href="Wlasnosci_liczb_naturalnych_karty_pracy.pdf">pobierz arkusz PDF (A4)</a> z miejscem na odpowiedzi. Można go wydrukować albo wypełniać na iPadzie Apple Pencilem (np. w aplikacji Pliki, GoodNotes lub Notability).</div>
+  </div>
+  <div class="footer-band"><span>Strona startowa</span><span>Własności liczb naturalnych</span></div>
+</section>
+
+<!-- ======================= WIELOKROTNOŚCI ======================= -->
+<section class="page" id="p-wiel">
+  <div class="band"><h1>Wielokrotności</h1><div class="sub">lekcja 1</div></div>
+
+  <div class="grid2">
+    <div class="ex" data-check>
+      <span class="ex-label">Ćwiczenie A.</span>
+      <p>W sklepie szklanki sprzedaje się tylko w kompletach po 6 sztuk. Ile szklanek kupimy, gdy weźmiemy dwa komplety? A trzy? A cztery?</p>
+      <div class="row">2 komplety: <input class="a" data-ans="12"> 3 komplety: <input class="a" data-ans="18"> 4 komplety: <input class="a" data-ans="24"></div>
+      <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:15px;color:var(--muted)">Liczba szklanek, które można kupić:</div>
+      <div class="mults" id="glassAnim" style="justify-content:center;font-size:22px;margin:12px 0"></div>
+      <div>Te liczby to <b class="key">wielokrotności liczby 6</b>.</div>
+    </div>
+  </div>
+
+  <div class="theory">
+    <b>Wielokrotność</b> liczby 6 to wynik mnożenia liczby 6 przez jakąś liczbę naturalną:
+    <div class="mono" style="font-size:20px;margin:8px 0">0 = 6 · 0, &nbsp; 6 = 6 · 1, &nbsp; 12 = 6 · 2, &nbsp; 18 = 6 · 3, &nbsp; 24 = 6 · 4, &nbsp; …</div>
+    Wielokrotności liczby 6: <b>0, 6, 12, 18, 24, 30, …</b> – jest ich nieskończenie wiele.
+  </div>
+
+  <div class="ex" data-check>
+    <span class="ex-label">Ćwiczenie B.</span>
+    <p>a) Wpisz kilka wielokrotności liczby 7 (oddziel przecinkami).</p>
+    <div class="row"><input class="a xw" data-mode="multiples" data-ans="7" placeholder="np. 0, 7, …"></div>
+    <p>b) Kliknij te liczby, które są wielokrotnościami liczby 2.</p>
+    <div class="pick" data-ans="0,14,38,150"><span class="chip">0</span><span class="chip">5</span><span class="chip">14</span><span class="chip">21</span><span class="chip">38</span><span class="chip">150</span><span class="chip">263</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+  </div>
+
+  <div class="note">👀 Zauważ: <b>liczby parzyste</b> to wielokrotności liczby 2, a liczby, które nie są wielokrotnościami liczby 2, to <b>liczby nieparzyste</b>.</div>
+
+  <h3>Paski Oli i Wojtka</h3>
+  <p>Ola składa zielone paski z jednakowych prostokątów o długości <b>12 cm</b>, a Wojtek – czerwone paski z prostokątów o długości <b>14 cm</b>.</p>
+  <svg viewBox="0 0 600 130" style="width:100%;max-width:640px" id="stripsSvg"></svg>
+  <div class="ex" data-check>
+    <span class="ex-label">Ćwiczenie C.</span>
+    <p>Jakie długości mają paski na rysunku? Zielone: <input class="a" data-ans="36"> cm i <input class="a" data-ans="60"> cm, czerwone: <input class="a" data-ans="42"> cm i <input class="a" data-ans="56"> cm.</p>
+    <p>Jakie inne długości mogą mieć zielone paski? A jakie czerwone? <i>(Podpowiedź: to wielokrotności…)</i></p>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+  </div>
+  <p>Po kilku próbach Oli i Wojtkowi udało się ułożyć oba paski – zielony i czerwony – <b>tej samej długości</b>. Jaką długość mógł mieć każdy z nich? Obejrzyj animację:</p>
+  <video controls playsinline preload="metadata" poster="NWWPaski.jpg" src="NWWPaski.mp4"></video>
+  <div class="vid-cap">Animacja: paski rosną, aż ich długości się zrównają.</div>
+
+  <p>Długości zielonych pasków to wielokrotności liczby 12, a czerwonych – wielokrotności liczby 14. Jeśli paski mają być równe, ich długość musi być <b>wspólną wielokrotnością</b> liczb 12 i 14.</p>
+  <div class="card">
+    <div class="row"><b>Sprawdź sam:</b> wielokrotności liczb <input class="a" id="mA" value="12" style="width:70px"> i <input class="a" id="mB" value="14" style="width:70px"> <button class="btn sec" id="mGo">Pokaż</button></div>
+    <div id="mOut"></div>
+  </div>
+  <div class="theory">
+    Wspólne, różne od zera wielokrotności liczb 12 i 14 to: 84, 168, 252, 336, … Najmniejsza z nich to 84. Zapisujemy:
+    <div style="text-align:center;font-size:24px;font-weight:800;margin:8px 0">NWW(12, 14) = 84</div>
+    Czytamy: <i>najmniejsza wspólna wielokrotność liczb 12 i 14 to 84</i>.
+  </div>
+  <div class="note"><b>Uwaga.</b> Szukając najmniejszej wspólnej wielokrotności dwóch liczb różnych od 0, bierzemy pod uwagę tylko wielokrotności <b>różne od 0</b>.</div>
+  <div class="ex" data-check>
+    <span class="ex-label">Ćwiczenie D.</span>
+    <p>Wypisz kilka wielokrotności liczb 4 i 10. Znajdź NWW(4, 10) = <input class="a" data-ans="20"></p>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+  </div>
+
+  <div class="zad-head">ZADANIA</div>
+  <div class="zad" data-check><span class="nr">1.</span> Podaj kilka przykładów liczb, które są wielokrotnościami liczby:
+    <div class="row">a) 9 <input class="a w" data-mode="multiples" data-ans="9"> b) 25 <input class="a w" data-mode="multiples" data-ans="25"></div>
+    <div class="row">c) 120 <input class="a w" data-mode="multiples" data-ans="120"> d) 3000 <input class="a w" data-mode="multiples" data-ans="3000"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">2.</span> Jakie liczby można wpisać w okienko? <i>Liczba 18 jest wielokrotnością liczby ▢.</i> Wpisz wszystkie.
+    <div class="row"><input class="a xw" data-mode="set" data-ans="1,2,3,6,9,18"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">3.</span> Spośród liczb <b>0, 18, 24, 34, 51, 57, 72, 85, 96</b> wypisz te, które są wielokrotnościami liczby:
+    <div class="row">a) 3 <input class="a xw" data-mode="set" data-ans="0,18,24,51,57,72,96"></div>
+    <div class="row">b) 8 <input class="a xw" data-mode="set" data-ans="0,24,72,96"></div>
+    <div class="row">c) 17 <input class="a xw" data-mode="set" data-ans="0,34,51,85"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">4.</span>
+    a) Znajdź najmniejszą liczbę większą od 300, która jest wielokrotnością liczby 40: <input class="a" data-ans="320"><br>
+    b) Znajdź największą liczbę mniejszą od 300, która jest wielokrotnością liczby 35: <input class="a" data-ans="280">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">5.</span>
+    a) Liczby A, B i C to kolejne wielokrotności liczby 12. Jakie współrzędne mają punkty A i C?
+    <svg viewBox="0 0 300 60" style="width:300px;display:block"><line x1="10" y1="30" x2="285" y2="30" stroke="#333" stroke-width="2" marker-end="url(#ar)"/><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8z" fill="#333"/></marker></defs><g fill="#ee7f22"><circle cx="80" cy="30" r="5"/><circle cx="150" cy="30" r="5"/><circle cx="220" cy="30" r="5"/></g><text x="74" y="18" font-style="italic">A</text><text x="144" y="18" font-style="italic">B</text><text x="214" y="18" font-style="italic">C</text><text x="140" y="52">60</text></svg>
+    A = <input class="a" data-ans="48"> C = <input class="a" data-ans="72"><br>
+    b) Liczby D, E, F i G to kolejne wielokrotności liczby 9, a E = 270. D = <input class="a" data-ans="261"> F = <input class="a" data-ans="279"> G = <input class="a" data-ans="288">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">6.</span>
+    <div class="note" style="display:inline-block;margin:4px 0">Czterokrotność liczby 15 to liczba równa 4 · 15.</div><br>
+    a) Czterokrotność liczby 15 jest trzykrotnością pewnej liczby. Jaka to liczba? <input class="a" data-ans="20"><br>
+    <span class="star"></span>b) Od pięciokrotności pewnej liczby odjęto trzykrotność tej liczby i otrzymano 18. O jakiej liczbie mowa? <input class="a" data-ans="9">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">7.</span> Które zdania są prawdziwe? Zaznacz P (prawda) lub F (fałsz).
+    <div class="tf"><span class="circ">1</span><span class="txt">Nie ma liczb nieparzystych, które są wielokrotnościami liczby 4.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">2</span><span class="txt">Każda liczba parzysta jest wielokrotnością liczby 4.</span><span class="choose" data-ans="F"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">3</span><span class="txt">Każda liczba naturalna jest wielokrotnością samej siebie.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">4</span><span class="txt">Liczba 0 jest wielokrotnością liczby 7.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">5</span><span class="txt">Każda wielokrotność liczby 4 jest wielokrotnością liczby 8.</span><span class="choose" data-ans="F"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr star">8.</span> Trzycyfrowa liczba 3▢2 jest wielokrotnością liczby 38. Jaką cyfrę trzeba wpisać w okienko? <input class="a" data-ans="4">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+    <div class="sol">3▢2 = 38 · ? Ostatnia cyfra 2 – sprawdzamy 38 · 4 = 152, 38 · 9 = 342 ✓. Szukana cyfra to <b>4</b>.</div></div>
+  <div class="zad" data-check><span class="nr">9.</span> Podaj NWW (najmniejszą wspólną wielokrotność) liczb:
+    <div class="row">a) 3 i 12 <input class="a" data-ans="12"> b) 6 i 8 <input class="a" data-ans="24"> c) 4 i 5 <input class="a" data-ans="20"> d) 1 i 347 <input class="a" data-ans="347"></div>
+    <div class="row">e) 7 i 13 <input class="a" data-ans="91"> f) 30 i 15 <input class="a" data-ans="30"> g) 2, 3 i 5 <input class="a" data-ans="30"> h) 4, 6 i 12 <input class="a" data-ans="12"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+
+  <div class="super"><span class="tag">super zagadka</span>
+    Ewa i Ola mierzyły stopami długość podwórka. Stopa Ewy ma 25 cm, a stopa Oli 20 cm. Po każdym kroku obie rysowały kreskę przy czubku buta. Nie licząc linii startu, kreska Ewy i kreska Oli 18 razy znalazły się w tym samym miejscu. Czy podwórko ma więcej niż 15 m?
+    <div class="row"><button class="btn sec rev">Pokaż rozwiązanie</button></div>
+    <div class="sol">Kreski spotykają się co NWW(25, 20) = 100 cm = 1 m. Skoro spotkały się 18 razy, podwórko ma co najmniej 18 m. <b>Tak</b>, ma więcej niż 15 m.</div>
+  </div>
+  <div class="footer-band"><span>Wielokrotności</span><span>Własności liczb naturalnych</span></div>
+</section>
+
+<!-- ======================= DZIELNIKI ======================= -->
+<section class="page" id="p-dziel">
+  <div class="band"><h1>Dzielniki</h1><div class="sub">lekcja 2</div></div>
+  <div class="grid2">
+    <div class="ex" data-check>
+      <span class="ex-label">Ćwiczenie A.</span>
+      <p>a) Mamy 24 cukierki i chcemy je zapakować do torebek po tyle samo sztuk (bez reszty). Po ile cukierków może być w torebkach? Wpisz wszystkie możliwości.</p>
+      <input class="a xw" data-mode="set" data-ans="1,2,3,4,6,8,12,24">
+      <p>b) A gdybyśmy rozdzielali 15 cukierków?</p>
+      <input class="a xw" data-mode="set" data-ans="1,3,5,15">
+      <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+    </div>
+    <div class="theory" style="margin-top:16px">Mówimy, że liczba jest <b>podzielna</b> przez jakąś liczbę, gdy dzieli się przez nią <b>bez reszty</b>.</div>
+  </div>
+  <div class="ex" data-check>
+    <span class="ex-label">Ćwiczenie B.</span>
+    <p>Kliknij te liczby naturalne, przez które jest podzielna liczba 20.</p>
+    <div class="pick" data-ans="1,2,4,5,10,20"><span class="chip">1</span><span class="chip">2</span><span class="chip">3</span><span class="chip">4</span><span class="chip">5</span><span class="chip">6</span><span class="chip">8</span><span class="chip">10</span><span class="chip">15</span><span class="chip">20</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+  </div>
+  <div class="theory">Każdą liczbę, przez którą liczba 20 jest podzielna, nazywamy jej <b class="key">dzielnikiem</b>. Dzielnikami liczby 20 są: <b>1, 2, 4, 5, 10 i 20</b>.</div>
+  <div class="ex" data-check>
+    <span class="ex-label">Ćwiczenie C.</span>
+    <p>a) Wypisz wszystkie dzielniki liczby 28: <input class="a xw" data-mode="set" data-ans="1,2,4,7,14,28"></p>
+    <p>b) Ile dzielników ma liczba 1? <input class="a" data-ans="1"> Ile dzielników ma liczba 11? <input class="a" data-ans="2"></p>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+  </div>
+  <div class="card"><b style="color:var(--orange-d)">PRZYKŁADY</b>
+    <div class="grid2" style="grid-template-columns:repeat(3,1fr);text-align:center;margin-top:8px">
+      <div>dzielniki liczby 10:<br><b>1, 2, 5, 10</b></div><div>dzielniki liczby 12:<br><b>1, 2, 3, 4, 6, 12</b></div><div>dzielniki liczby 13:<br><b>1, 13</b></div>
+    </div></div>
+  <div class="note">Każda liczba naturalna większa od 1 ma <b>co najmniej dwa dzielniki</b>: dzieli się przez 1 i przez samą siebie.</div>
+
+  <h3>Sposób Marty</h3>
+  <div class="grid2">
+    <div>
+      <p>Marta zauważyła, że najłatwiej znaleźć wszystkie dzielniki liczby, gdy wypisze się po kolei <b>iloczyny dwóch liczb</b>, które dają tę liczbę. Dla liczby 32:</p>
+      <div class="card mono" style="font-size:22px;text-align:center">32 = 1 · 32<br>32 = 2 · 16<br>32 = 4 · 8<br><span style="font-size:17px">Dzielniki liczby 32: <b>1, 2, 4, 8, 16, 32</b></span></div>
+    </div>
+    <div><video controls playsinline preload="metadata" poster="DzielnikiPary.jpg" src="DzielnikiPary.mp4"></video><div class="vid-cap">Animacja: kwadraciki układają się w prostokąty – każdy prostokąt to para dzielników liczby 36.</div></div>
+  </div>
+  <div class="card">
+    <div class="row"><b>Wypróbuj:</b> liczba <input class="a" id="dN" value="48"> <button class="btn sec" id="dGo">Szukaj par</button></div>
+    <div id="dOut"></div>
+  </div>
+  <div class="ex" data-check>
+    <span class="ex-label">Ćwiczenie D.</span>
+    <p>a) Wyjaśnij własnymi słowami, na czym polega sposób Marty. Kiedy można przestać szukać?</p>
+    <p>b) Znajdź wszystkie dzielniki liczby 36: <input class="a xw" data-mode="set" data-ans="1,2,3,4,6,9,12,18,36"></p>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Wskazówka do a)</button></div>
+    <div class="sol">Sprawdzamy kolejno 1, 2, 3, … czy dzielą liczbę – każdy znaleziony dzielnik ma „parę”. Kończymy, gdy pierwsza liczba w iloczynie stanie się równa drugiej albo od niej większa – dalej pary by się powtarzały.</div>
+  </div>
+
+  <h3>Największy wspólny dzielnik</h3>
+  <div class="grid2">
+    <div>
+      <p>Kartkę o wymiarach <b>18 cm × 24 cm</b> chcemy pociąć na jednakowe kwadraty o bokach wyrażonych w pełnych centymetrach. Można ją pociąć np. na kwadraty o boku 1 cm albo 2 cm.</p>
+      <p>Bok kwadratu musi być <b>dzielnikiem zarówno 18, jak i 24</b>. Bok największych możliwych kwadratów to więc <b>największy wspólny dzielnik</b> tych liczb.</p>
+    </div>
+    <div><video controls playsinline preload="metadata" poster="NWDKartka.jpg" src="NWDKartka.mp4"></video><div class="vid-cap">Animacja: próbujemy kwadratów o boku 1, 2, 3, 4 i 6 cm.</div></div>
+  </div>
+  <div class="card mono">
+    <div><b style="color:var(--blue)">Dzielniki liczby 18:</b> <span class="hl">1</span> <span class="hl">2</span> <span class="hl">3</span> <span class="hl">6</span> 9 18</div>
+    <div style="margin-top:6px"><b style="color:var(--blue)">Dzielniki liczby 24:</b> <span class="hl">1</span> <span class="hl">2</span> <span class="hl">3</span> 4 <span class="hl">6</span> 8 12 24</div>
+  </div>
+  <div class="theory">Wspólne dzielniki liczb 18 i 24 to 1, 2, 3, 6. Największy z nich to 6:
+    <div style="text-align:center;font-size:24px;font-weight:800;margin:8px 0">NWD(18, 24) = 6</div>
+    Czytamy: <i>największy wspólny dzielnik liczb 18 i 24 to 6</i>. Największe kwadraty, na jakie można podzielić kartkę, mają wymiary 6 cm × 6 cm.</div>
+  <div class="card">
+    <div class="row"><b>Sprawdź sam:</b> NWD liczb <input class="a" id="gA" value="18" style="width:70px"> i <input class="a" id="gB" value="24" style="width:70px"> <button class="btn sec" id="gGo">Pokaż</button></div>
+    <div id="gOut"></div>
+  </div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie E.</span> Znajdź NWD(16, 20) = <input class="a" data-ans="4">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+
+  <div class="zad-head">ZADANIA</div>
+  <div class="zad" data-check><span class="nr">1.</span> Wypisz wszystkie dzielniki podanej liczby.
+    <div class="row">a) 7 <input class="a w" data-mode="set" data-ans="1,7"> b) 8 <input class="a w" data-mode="set" data-ans="1,2,4,8"></div>
+    <div class="row">c) 16 <input class="a w" data-mode="set" data-ans="1,2,4,8,16"> d) 27 <input class="a w" data-mode="set" data-ans="1,3,9,27"></div>
+    <div class="row">e) 40 <input class="a w" data-mode="set" data-ans="1,2,4,5,8,10,20,40"> f) 64 <input class="a w" data-mode="set" data-ans="1,2,4,8,16,32,64"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">2.</span> Które zdania są prawdziwe?
+    <div class="tf"><span class="circ">1</span><span class="txt">Liczba 1 jest dzielnikiem każdej liczby naturalnej.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">2</span><span class="txt">Liczba 5 jest dzielnikiem każdej liczby, której ostatnią cyfrą jest 0.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">3</span><span class="txt">Liczba 2 jest dzielnikiem każdej liczby nieparzystej.</span><span class="choose" data-ans="F"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">4</span><span class="txt">Każdy dzielnik liczby 12 jest dzielnikiem liczby 36.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">5</span><span class="txt">Każdy dzielnik liczby 36 jest dzielnikiem liczby 12.</span><span class="choose" data-ans="F"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">3.</span> Które z podanych liczb są dzielnikami liczby 150? Kliknij je.
+    <div class="pick" data-ans="1,15,30,75,150"><span class="chip">1</span><span class="chip">15</span><span class="chip">20</span><span class="chip">30</span><span class="chip">75</span><span class="chip">150</span><span class="chip">300</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">4.</span> 🏰 Do skarbu prowadzi tylko jedne drzwi. Są oznaczone liczbą, dla której <b>suma wszystkich dzielników jest równa 31</b>. Które to drzwi?
+    <div class="pick" data-ans="16" data-single><span class="chip">🚪 7</span><span class="chip">🚪 10</span><span class="chip">🚪 12</span><span class="chip">🚪 14</span><span class="chip">🚪 16</span><span class="chip">🚪 21</span><span class="chip">🚪 30</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+    <div class="sol">Dzielniki 16: 1 + 2 + 4 + 8 + 16 = 31 ✓</div></div>
+  <div class="zad" data-check><span class="nr">5.</span> Wypisz wszystkie liczby trzycyfrowe, których dzielnikiem jest:
+    <div class="row">a) 200 <input class="a xw" data-mode="set" data-ans="200,400,600,800"></div>
+    <div class="row">b) 150 <input class="a xw" data-mode="set" data-ans="150,300,450,600,750,900"></div>
+    <div class="row">c) 250 <input class="a xw" data-mode="set" data-ans="250,500,750"></div>
+    <div class="row">d) 300 <input class="a xw" data-mode="set" data-ans="300,600,900"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">6.</span> a) Ile jest liczb trzycyfrowych, których dzielnikiem jest 40? <input class="a" data-ans="22"><br>
+    b) Ile jest liczb czterocyfrowych, których dzielnikiem jest 250? <input class="a" data-ans="36">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Wskazówka</button></div>
+    <div class="sol">a) Pierwsza: 120 = 40 · 3, ostatnia: 960 = 40 · 24. Od 3 do 24 jest 22 liczby. b) 1000 = 250 · 4, 9750 = 250 · 39 → od 4 do 39 jest 36 liczb.</div></div>
+  <div class="ciek"><h4>Ciekawostka</h4><b>Liczba doskonała</b> to liczba równa sumie wszystkich swoich dzielników mniejszych od niej. Liczb doskonałych znamy bardzo mało – w 2024 roku znano ich zaledwie 52.</div>
+  <div class="zad" data-check><span class="nr">7.</span> Przeczytaj ciekawostkę.<br>
+    a) Wypisz dzielniki liczby 6 mniejsze od 6: <input class="a w" data-mode="set" data-ans="1,2,3">. Ich suma: <input class="a" data-ans="6">. Czy 6 jest liczbą doskonałą? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span><br>
+    b) Czy 28 jest liczbą doskonałą? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span> &nbsp; c) A liczba 12? <span class="choose" data-ans="nie"><span class="chip">tak</span><span class="chip">nie</span></span>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr star">8.</span> Podaj przykład liczby trzycyfrowej, której dzielnikami są liczby 6 i 5: <input class="a" data-mode="fn" data-fn="three65"><br>Znajdź najmniejszą liczbę trzycyfrową, która spełnia te warunki: <input class="a" data-ans="120">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">9.</span> Znajdź NWD (największy wspólny dzielnik) liczb:
+    <div class="row">a) 18 i 30 <input class="a" data-ans="6"> b) 14 i 15 <input class="a" data-ans="1"> c) 5 i 20 <input class="a" data-ans="5"> d) 8 i 17 <input class="a" data-ans="1"></div>
+    <div class="row">e) 3 i 64 <input class="a" data-ans="1"> f) 48 i 3 <input class="a" data-ans="3"> g) 27 i 4 <input class="a" data-ans="1"> h) 13 i 52 <input class="a" data-ans="13"></div>
+    <div class="row">i) 9 i 14 <input class="a" data-ans="1"> j) 20 i 300 <input class="a" data-ans="20"> k) 2 i 777 <input class="a" data-ans="1"> l) 5 i 405 <input class="a" data-ans="5"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">10.</span> 🍎🍐 Mamy 24 jabłka i 36 gruszek. Chcemy ze wszystkich owoców ułożyć jednakowe zestawy (w każdym tyle samo jabłek i tyle samo gruszek). Jaka jest największa możliwa liczba takich zestawów? <input class="a" data-ans="12">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr star">11.</span> Znajdź wszystkie liczby naturalne większe od 0, ale mniejsze od 30, które można wpisać w miejsce znaku zapytania.
+    <div class="row">a) NWD(13, ?) = 13 <input class="a w" data-mode="set" data-ans="13,26"> b) NWD(8, ?) = 8 <input class="a w" data-mode="set" data-ans="8,16,24"></div>
+    <div class="row">c) NWD(?, 40) = 5 <input class="a w" data-mode="set" data-ans="5,15,25"> d) podaj dwie liczby: NWD(?, ?) = 9 <input class="a w" data-mode="fn" data-fn="pair9" placeholder="np. a, b"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="super"><span class="tag">super zagadka</span>
+    Pewna liczba ma dokładnie cztery dzielniki, a ich suma jest równa 32. Jednym z dzielników jest 7. Znajdź tę liczbę. <input class="a" data-ans="21" id="sz2">
+    <div class="row"><button class="btn chk" data-target="sz2">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Rozwiązanie</button></div>
+    <div class="sol">Dzielniki to 1, 7, jakaś liczba p i sama liczba 7 · p. 1 + 7 + p + 7p = 32 → 8p = 24 → p = 3. Liczba to <b>21</b> (1 + 3 + 7 + 21 = 32).</div>
+  </div>
+  <div class="footer-band"><span>Dzielniki</span><span>Własności liczb naturalnych</span></div>
+</section>
+
+<!-- ======================= CECHY ======================= -->
+<section class="page" id="p-cechy">
+  <div class="band"><h1>Cechy podzielności liczb</h1><div class="sub">lekcja 3</div></div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie A.</span>
+    <p>a) Czy liczba 314 jest podzielna przez 4? <span class="choose" data-ans="nie"><span class="chip">tak</span><span class="chip">nie</span></span>
+    &nbsp; b) Czy liczba 1458 jest podzielna przez 9? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span></p>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <p>Aby ustalić, czy liczba jest podzielna przez inną liczbę, można wykonać dzielenie i sprawdzić, czy reszta wynosi 0. Czasem jednak <b>wcale nie trzeba dzielić</b>!</p>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie B.</span> 🤖 Robot odpowiada błyskawicznie, czy liczba jest podzielna przez 2, przez 5, przez 10, przez 100. Ty też tak potrafisz! Kliknij odpowiednie liczby.
+    <p>a) podzielne przez 2:</p><div class="pick" data-ans="340,72,64,250,900,3400"><span class="chip">340</span><span class="chip">72</span><span class="chip">55</span><span class="chip">35</span><span class="chip">64</span><span class="chip">105</span><span class="chip">250</span><span class="chip">175</span><span class="chip">900</span><span class="chip">815</span><span class="chip">3400</span></div>
+    <p>b) podzielne przez 5:</p><div class="pick" data-ans="340,55,35,105,250,175,900,815,3400"><span class="chip">340</span><span class="chip">72</span><span class="chip">55</span><span class="chip">35</span><span class="chip">64</span><span class="chip">105</span><span class="chip">250</span><span class="chip">175</span><span class="chip">900</span><span class="chip">815</span><span class="chip">3400</span></div>
+    <p>c) podzielne przez 10:</p><div class="pick" data-ans="340,250,900,3400"><span class="chip">340</span><span class="chip">72</span><span class="chip">55</span><span class="chip">35</span><span class="chip">64</span><span class="chip">105</span><span class="chip">250</span><span class="chip">175</span><span class="chip">900</span><span class="chip">815</span><span class="chip">3400</span></div>
+    <p>d) podzielne przez 100:</p><div class="pick" data-ans="900,3400"><span class="chip">340</span><span class="chip">72</span><span class="chip">55</span><span class="chip">35</span><span class="chip">64</span><span class="chip">105</span><span class="chip">250</span><span class="chip">175</span><span class="chip">900</span><span class="chip">815</span><span class="chip">3400</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>
+    <p class="small">Spróbuj opisać, czym wyróżniają się liczby podzielne przez 10, a czym – przez 100. A liczby podzielne przez 2 i przez 5?</p></div>
+  <p>Aby rozstrzygnąć, czy liczba jest podzielna przez 2, 5, 10 lub 100, korzystamy z <b>cech podzielności</b>:</p>
+  <div class="puzzles">
+    <div class="pz g" style="--r:-3deg"><div class="t">Liczba jest podzielna przez 2<span>2</span></div><div class="b">tylko wtedy, gdy jej ostatnią cyfrą jest 0, 2, 4, 6 lub 8.</div></div>
+    <div class="pz o" style="--r:2deg"><div class="t">Liczba jest podzielna przez 10<span>10</span></div><div class="b">tylko wtedy, gdy jej ostatnią cyfrą jest 0.</div></div>
+    <div class="pz bl" style="--r:-1deg"><div class="t">Liczba jest podzielna przez 5<span>5</span></div><div class="b">tylko wtedy, gdy jej ostatnią cyfrą jest 0 lub 5.</div></div>
+    <div class="pz y" style="--r:3deg"><div class="t">Liczba jest podzielna przez 100<span>100</span></div><div class="b">tylko wtedy, gdy jej dwie ostatnie cyfry to 00.</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="ex" data-check><span class="ex-label">Ćwiczenie C.</span>
+      <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0">
+        <div style="border:3px solid #9ccc65;border-radius:50%;padding:12px 18px;text-align:center">300 800<br>1500<br>2100 600<br><small>podzielne przez 100</small></div>
+        <div><div style="border:3px solid #64b5f6;border-radius:40px;padding:8px 16px;text-align:center">8 44 16<br>28 36<br><small>podzielne przez 4</small></div>
+        <div style="border:3px solid #ffd54f;border-radius:40px;padding:8px 16px;text-align:center;margin-top:8px">14 9 30<br>21 46<br><small>niepodzielne przez 4</small></div></div>
+      </div>
+      <p>Liczby z zielonej pętli też są podzielne przez 4.<br>a) Wybierz liczbę z zielonej i liczbę z niebieskiej pętli. Czy ich suma jest podzielna przez 4? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span><br>
+      b) Czy można wybrać liczbę z zielonej i z żółtej pętli tak, by suma była podzielna przez 4? <span class="choose" data-ans="nie"><span class="chip">tak</span><span class="chip">nie</span></span></p>
+      <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+    <div>
+      <p>Liczba 100 jest podzielna przez 4 (100 = 4 · 25). Każdą liczbę większą od 100 można zapisać jako <b>wielokrotność 100 + liczba jedno- lub dwucyfrowa</b>. Dlatego podzielność przez 4 zależy tylko od <b>dwóch ostatnich cyfr</b>.</p>
+      <div class="puzzles" style="justify-content:flex-start"><div class="pz g"><div class="t">Liczba jest podzielna przez 4<span>4</span></div><div class="b">tylko wtedy, gdy jej dwie ostatnie cyfry tworzą liczbę podzielną przez 4.</div></div></div>
+    </div>
+  </div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie D.</span> Zapisz w myślach liczby jako sumę wielokrotności 100 i liczby dwucyfrowej (np. 436 = 400 + 36). Kliknij liczby podzielne przez 4.
+    <div class="pick" data-ans="436,9612"><span class="chip">436</span><span class="chip">1574</span><span class="chip">3258</span><span class="chip">9612</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <video controls playsinline preload="metadata" poster="CechyPodzielnosci.jpg" src="CechyPodzielnosci.mp4"></video>
+  <div class="vid-cap">Animacja: dlaczego działają cechy podzielności przez 4, przez 3 i przez 9.</div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie E.</span> Kuba i Ala zastanawiają się nad liczbami podzielnymi przez 3.<br>
+    🧒 Kuba: <i>„Liczba podzielna przez 3 zawsze ma ostatnią cyfrę podzielną przez 3.”</i><br>
+    👧 Ala: <i>„Każda liczba podzielna przez 3 musi być nieparzysta.”</i><br>
+    Kto ma rację? <span class="choose" data-ans="nikt"><span class="chip">Kuba</span><span class="chip">Ala</span><span class="chip">oboje</span><span class="chip">nikt</span></span>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Dlaczego?</button></div>
+    <div class="sol">12 dzieli się przez 3, a kończy się cyfrą 2 – Kuba nie ma racji. 12 jest też parzysta – Ala nie ma racji.</div></div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie F.</span> Liczby: 12, 19, 27, 33, 46, 51, 74, 213, 418.
+    <p>Kliknij liczby <b style="color:var(--red)">podzielne przez 3</b>:</p><div class="pick" data-ans="12,27,33,51,213"><span class="chip">12</span><span class="chip">19</span><span class="chip">27</span><span class="chip">33</span><span class="chip">46</span><span class="chip">51</span><span class="chip">74</span><span class="chip">213</span><span class="chip">418</span></div>
+    <p>Kliknij liczby, których <b style="color:var(--blue)">suma cyfr</b> jest podzielna przez 3:</p><div class="pick" data-ans="12,27,33,51,213"><span class="chip">12</span><span class="chip">19</span><span class="chip">27</span><span class="chip">33</span><span class="chip">46</span><span class="chip">51</span><span class="chip">74</span><span class="chip">213</span><span class="chip">418</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="theory">Liczby podzielne przez 3 mają wspólną cechę: <b>suma ich cyfr też jest podzielna przez 3</b>. Np. 24 → 2 + 4 = 6, 51 → 5 + 1 = 6, 216 → 2 + 1 + 6 = 9.<br>
+  Suma cyfr liczb niepodzielnych przez 3 nie jest podzielna przez 3. Np. 23 → 5, 58 → 13, 151 → 7.</div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie G.</span> Uzupełnij tabelę i przyjrzyj się jej. Co zauważasz?
+    <div style="overflow-x:auto"><table class="tb" id="tabG"></table></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="puzzles">
+    <div class="pz bl" style="--r:-2deg"><div class="t">Liczba jest podzielna przez 3<span>3</span></div><div class="b">tylko wtedy, gdy suma jej cyfr jest liczbą podzielną przez 3.</div></div>
+    <div class="pz y" style="--r:2deg"><div class="t">Liczba jest podzielna przez 9<span>9</span></div><div class="b">tylko wtedy, gdy suma jej cyfr jest liczbą podzielną przez 9.</div></div>
+  </div>
+  <p>Cechy podzielności przez 3 i przez 9 są inne niż poprzednie: najpierw trzeba <b>policzyć sumę cyfr</b>.</p>
+  <div class="card"><div class="row"><b>Detektor podzielności:</b> <input class="a w" id="cN" value="2748" inputmode="numeric"></div><div id="cOut"></div></div>
+
+  <div class="zad-head">ZADANIA</div>
+  <div class="zad" data-check><span class="nr">1.</span> Spośród liczb <b>20, 53, 64, 85, 315, 488, 730, 1250, 2006, 4700, 6205, 98 300, 2 000 500</b> wypisz liczby podzielne:
+    <div class="row">a) przez 2 <input class="a xw" data-mode="set" data-ans="20,64,488,730,1250,2006,4700,98300,2000500"></div>
+    <div class="row">b) przez 5 <input class="a xw" data-mode="set" data-ans="20,85,315,730,1250,4700,6205,98300,2000500"></div>
+    <div class="row">c) przez 10 <input class="a xw" data-mode="set" data-ans="20,730,1250,4700,98300,2000500"></div>
+    <div class="row">d) przez 100 <input class="a xw" data-mode="set" data-ans="4700,98300,2000500"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">2.</span> Wypisz kilka liczb podzielnych przez 25: <input class="a xw" data-mode="multiples" data-ans="25"> Czy potrafisz sformułować cechę podzielności przez 25?
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Cecha</button></div>
+    <div class="sol">Liczba jest podzielna przez 25 tylko wtedy, gdy jej dwie ostatnie cyfry to 00, 25, 50 lub 75.</div></div>
+  <div class="zad" data-check><span class="nr">3.</span> Które z liczb są podzielne przez 4?
+    <div class="pick" data-ans="1324,516,892,21436"><span class="chip">1324</span><span class="chip">678</span><span class="chip">516</span><span class="chip">219</span><span class="chip">892</span><span class="chip">63 514</span><span class="chip">21 436</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">4.</span> Asia sprawdza podzielność przez 4 inaczej: <i>„Liczba jest podzielna przez 4, gdy jest parzysta i po podzieleniu jej przez 2 dostajemy liczbę parzystą.”</i> Np. 1236 : 2 = 618 – parzysta, więc 1236 dzieli się przez 4; 2038 : 2 = 1019 – nieparzysta, więc 2038 nie dzieli się przez 4.<br>Sprawdź sposobem Asi, które z liczb są podzielne przez 4:
+    <div class="pick" data-ans="724,936"><span class="chip">724</span><span class="chip">518</span><span class="chip">936</span><span class="chip">6870</span><span class="chip">3354</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="ciek"><h4>Ciekawostka</h4>Ziemia okrąża Słońce w 365 dni 5 godzin 48 minut i 46 sekund – trochę dłużej niż trwa zwykły rok (365 dni). Żeby to wyrównać, niektóre lata mają 366 dni – to <b>lata przestępne</b> (luty ma wtedy 29 dni).<br>Rok jest przestępny, gdy jego numer dzieli się przez 4 (np. 2016, 2020, 2024). <b>Wyjątek:</b> lata podzielne przez 100, ale niepodzielne przez 400 (np. 1700, 1800, 1900, 2100) <b>nie są</b> przestępne. Za to lata 1600, 2000, 2400 są przestępne.</div>
+  <div class="zad" data-check><span class="nr">5.</span> Przeczytaj ciekawostkę.<br>
+    a) Czy rok twojego urodzenia był przestępny? (sprawdź sam!)<br>
+    b) Czy rok 2026 jest przestępny? <span class="choose" data-ans="nie"><span class="chip">tak</span><span class="chip">nie</span></span> Podaj dwa najbliższe lata przestępne: <input class="a w" data-mode="set" data-ans="2028,2032"><br>
+    c) Które lata są przestępne? <div class="pick" data-ans="1704,1948,2000,2024"><span class="chip">1704</span><span class="chip">1900</span><span class="chip">1948</span><span class="chip">1975</span><span class="chip">2000</span><span class="chip">2200</span><span class="chip">2024</span></div>
+    d) Ostatnie lata wieków XVIII, XIX i XX to 1800, 1900 i 2000. Który z nich był przestępny? <input class="a" data-ans="2000">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">6.</span> Pani Ania urodziła się 29 lutego 2012 r. Podaj najbliższy od dzisiaj rok, w którym będzie mogła świętować urodziny dokładnie w dniu urodzin: <input class="a" data-ans="2028">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">7.</span> Wśród liczb <b>135, 2341, 30 012, 8127, 41 022, 1 000 001, 56 789</b> odszukaj liczby podzielne:
+    <div class="row">a) przez 3 <input class="a xw" data-mode="set" data-ans="135,30012,8127,41022"></div>
+    <div class="row">b) przez 9 <input class="a xw" data-mode="set" data-ans="135,8127,41022"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">8.</span> a) Podaj przykład liczby trzycyfrowej podzielnej przez 3, ale niepodzielnej przez 9: <input class="a" data-mode="fn" data-fn="by3not9"><br>
+    b) Czy istnieje liczba podzielna przez 9 i niepodzielna przez 3? <span class="choose" data-ans="nie"><span class="chip">tak</span><span class="chip">nie</span></span>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">9.</span> <b>ZAGINĘŁA LICZBA!</b> 🤠 Rysopis: jest większa od 7300 i mniejsza od 7400, jest podzielna przez 9 i przez 10. Jaka to liczba? <input class="a" data-ans="7380">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">10.</span> Które sumy są podzielne przez 3, a które przez 9? &nbsp; A: 10² + 5 &nbsp; B: 10³ + 17 &nbsp; C: 100² + 8 &nbsp; D: 10³ + 2 &nbsp; E: 100³ + 5
+    <div class="row">przez 3: <input class="a w" data-mode="setl" data-ans="A,B,C,D,E"> przez 9: <input class="a w" data-mode="setl" data-ans="B,C"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div><span class="small">Wpisz litery, np. A, C</span></div>
+  <div class="zad" data-check><span class="nr">11.</span> Zapisz najmniejszą i największą liczbę dziesięciocyfrową o różnych cyfrach: <input class="a w" data-ans="1023456789"> <input class="a w" data-ans="9876543210"><br>Czy są podzielne przez 9? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">12.</span> a) Ile jest liczb trzycyfrowych podzielnych przez 3, zapisanych tylko cyframi 1, 2, 3 (cyfry mogą się powtarzać)? <input class="a" data-ans="9"><br>
+    <span class="star"></span>b) Ile jest liczb sześciocyfrowych podzielnych przez 9, zapisanych tylko cyframi 0 i 3? <input class="a" data-ans="11">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Rozwiązanie</button></div>
+    <div class="sol">a) Suma cyfr 3, 6 lub 9: 111, 123, 132, 213, 222, 231, 312, 321, 333 – razem 9. b) Suma cyfr musi być podzielna przez 9, więc trójek jest 3 albo 6. Pierwsza cyfra to 3. Trzy trójki: pozostałe dwie trójki wstawiamy na 2 z 5 miejsc – 10 sposobów. Sześć trójek: 333 333. Razem 11.</div></div>
+  <div class="zad" data-check><span class="nr">13.</span> 🔐 Klucz szyfru: liczba podzielna przez 4 → <b>K</b>, przez 3 → <b>O</b>, przez 5 → <b>T</b>, przez 7 → <b>L</b>. Odszyfruj słowa:
+    <div class="row">316 201 1205 → <input class="a" data-ans="KOT" data-mode="text"> &nbsp; 1001 201 1205 → <input class="a" data-ans="LOT" data-mode="text"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div>b) Ułóż inne słowo z tych liter i zaszyfruj je liczbami co najmniej trzycyfrowymi.</div>
+  <div class="zad" data-check><span class="nr star">14.</span> Suma cyfr pewnej wielkiej liczby <i>a</i> wynosi 6456. Czy <i>a</i> jest podzielna przez 3? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span> Czy jest podzielna przez 9? <span class="choose" data-ans="nie"><span class="chip">tak</span><span class="chip">nie</span></span>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">15.</span> Zapisz liczbę czterocyfrową i pięciocyfrową, takie że każda z nich:
+    <div class="row">a) jest podzielna przez 5 i przez 4: <input class="a" data-mode="fn" data-fn="c15a4"> <input class="a" data-mode="fn" data-fn="c15a5"></div>
+    <div class="row">b) jest podzielna przez 3 i przez 2: <input class="a" data-mode="fn" data-fn="c15b4"> <input class="a" data-mode="fn" data-fn="c15b5"></div>
+    <div class="row">c) jest podzielna przez 3 i niepodzielna przez 9: <input class="a" data-mode="fn" data-fn="c15c4"> <input class="a" data-mode="fn" data-fn="c15c5"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">16.</span> a) Podaj przykład liczby trzycyfrowej podzielnej przez 3 i przez 5: <input class="a" data-mode="fn" data-fn="by15">. Czy jest podzielna przez 15? <span class="choose" data-ans="tak"><span class="chip">tak</span><span class="chip">nie</span></span><br>
+    b) Nie dzieląc, sprawdź, które liczby są podzielne przez 15: <div class="pick" data-ans="75,4605"><span class="chip">75</span><span class="chip">130</span><span class="chip">4605</span><span class="chip">2253</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">17.</span> Korzystając z cech podzielności, wśród liczb <b>2460, 1356, 74 020, 5545, 91 284, 403 101</b> odszukaj wielokrotności:
+    <div class="row">a) liczby 6 <input class="a xw" data-mode="set" data-ans="2460,1356,91284"></div>
+    <div class="row">b) liczby 12 <input class="a xw" data-mode="set" data-ans="2460,1356,91284"></div>
+    <div class="row">c) liczby 20 <input class="a xw" data-mode="set" data-ans="2460,74020"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Wskazówka</button></div>
+    <div class="sol">6 = 2 · 3, 12 = 4 · 3, 20 = 4 · 5 – sprawdzaj obie cechy naraz.</div></div>
+  <div class="zad" data-check><span class="nr">18.</span> Nie dzieląc, ustal reszty z dzielenia liczb przez 5 oraz przez 4.
+    <table class="tb"><tr><th>liczba</th><th>2437</th><th>8104</th><th>5326</th><th>9999</th><th>6750</th></tr>
+    <tr><th>reszta z dzielenia przez 5</th><td><input class="a" data-ans="2"></td><td><input class="a" data-ans="4"></td><td><input class="a" data-ans="1"></td><td><input class="a" data-ans="4"></td><td><input class="a" data-ans="0"></td></tr>
+    <tr><th>reszta z dzielenia przez 4</th><td><input class="a" data-ans="1"></td><td><input class="a" data-ans="0"></td><td><input class="a" data-ans="2"></td><td><input class="a" data-ans="3"></td><td><input class="a" data-ans="2"></td></tr></table>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr star">19.</span> a) Nie dzieląc, znajdź reszty z dzielenia przez 3 liczb: 715 <input class="a" data-ans="1"> 6023 <input class="a" data-ans="2"> 88 011 <input class="a" data-ans="0"><br>
+    b) Zapisz dziewięć kolejnych liczb trzycyfrowych i, nie dzieląc, znajdź reszty z dzielenia ich przez 9. Co zauważasz?
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Wskazówka</button></div>
+    <div class="sol">Reszta z dzielenia przez 3 (lub 9) jest taka sama jak reszta z dzielenia sumy cyfr. Dla kolejnych liczb reszty z dzielenia przez 9 rosną o 1 i „zawijają się” po 8 do 0.</div></div>
+  <div class="super"><span class="tag">super zagadka</span>
+    Jaką cyfrą trzeba zastąpić znak ◆, aby liczba <b style="font-size:22px">25◆8</b> dawała resztę 2 z dzielenia przez 12? <input class="a" data-ans="5" id="sz3">
+    <div class="row"><button class="btn chk" data-target="sz3">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Rozwiązanie</button></div>
+    <div class="sol">Jeśli reszta to 2, to 25◆6 musi dzielić się przez 12, czyli przez 4 i przez 3. Przez 4: ◆6 dzieli się przez 4, gdy ◆ jest nieparzysta. Przez 3: 2 + 5 + ◆ + 6 = 13 + ◆ dzieli się przez 3, gdy ◆ = 2, 5 lub 8. Obie cechy spełnia tylko <b>5</b>: 2558 = 12 · 213 + 2.</div></div>
+  <div class="footer-band"><span>Cechy podzielności liczb</span><span>Własności liczb naturalnych</span></div>
+</section>
+
+<!-- ======================= PIERWSZE ======================= -->
+<section class="page" id="p-pierwsze">
+  <div class="band"><h1>Liczby pierwsze i liczby złożone</h1><div class="sub">lekcja 4</div></div>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie A.</span> Ile dzielników ma każda z liczb?
+    <div class="row">6: <input class="a" data-ans="4"> 7: <input class="a" data-ans="2"> 15: <input class="a" data-ans="4"> 17: <input class="a" data-ans="2"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <p>Każda liczba naturalna większa od 1 ma co najmniej dwa dzielniki, bo dzieli się przez 1 i przez samą siebie.</p>
+  <div class="ex" data-check><span class="ex-label">Ćwiczenie B.</span> Podaj trzy przykłady liczb, które mają:
+    <div class="row">a) więcej niż dwa dzielniki <input class="a w" data-mode="fn" data-fn="composites"></div>
+    <div class="row">b) tylko dwa dzielniki <input class="a w" data-mode="fn" data-fn="primes"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="theory">
+    Liczbę naturalną, która ma <b>dokładnie dwa dzielniki</b>, nazywamy <b class="key">liczbą pierwszą</b>. Przykłady: 2, 3, 5, 7, 11, 13, 17, 19, 23.<br><br>
+    Liczbę naturalną różną od zera, która ma <b>więcej niż dwa dzielniki</b>, nazywamy <b class="key">liczbą złożoną</b>. Przykłady: 4, 6, 8, 9, 10, 12, 14, 15, 16.<br><br>
+    Liczby <b>0 i 1</b> nie są ani pierwsze, ani złożone.
+  </div>
+  <div class="grid2">
+    <div><video controls playsinline preload="metadata" poster="SitoEratostenesa.jpg" src="SitoEratostenesa.mp4"></video><div class="vid-cap">Animacja: sito Eratostenesa – skreślamy wielokrotności 2, 3, 5 i 7.</div></div>
+    <div class="card" style="margin:0">
+      <b>Zrób sito sam!</b> <span class="small">Naciskaj „Następny krok”.</span>
+      <div class="row"><button class="btn" id="sStep">Następny krok ▸</button><button class="btn sec" id="sReset">Od nowa</button></div>
+      <div id="sMsg" class="small" style="min-height:24px"></div>
+      <div class="sieve" id="sieve"></div>
+    </div>
+  </div>
+  <div class="ciek"><h4>Ciekawostka</h4>Liczb pierwszych jest nieskończenie wiele, ale znajdowanie coraz większych jest bardzo trudne – dziś pomagają w tym komputery. W październiku 2024 roku odkryto liczbę pierwszą, która ma aż <b>41 024 320 cyfr</b>. Gdyby zapisać jej cyfry jedna za drugą na pasku papieru (4 mm na cyfrę), pasek miałby około <b>164 km</b> długości!</div>
+
+  <div class="zad-head">ZADANIA</div>
+  <div class="zad" data-check><span class="nr">1.</span> Uzasadnij, że liczby są złożone – dla każdej znajdź dzielnik różny od 1 i różny od tej liczby (skorzystaj z cech podzielności).
+    <div class="row">2316: <input class="a" data-mode="divisor" data-ans="2316"> 4785: <input class="a" data-mode="divisor" data-ans="4785"> 1818: <input class="a" data-mode="divisor" data-ans="1818"> 2721: <input class="a" data-mode="divisor" data-ans="2721"> 7413: <input class="a" data-mode="divisor" data-ans="7413"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">2.</span> Poniżej są wszystkie liczby pierwsze mniejsze od 1000.
+    <div class="primes1000" id="p1000"></div>
+    a) Najmniejsza trzycyfrowa liczba pierwsza: <input class="a" data-ans="101">, największa: <input class="a" data-ans="997"><br>
+    b) Ile jest liczb pierwszych mniejszych od 1000? <input class="a" data-ans="168"><br>
+    c) Ile jest liczb złożonych mniejszych od 1000? <input class="a" data-ans="830">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Wskazówka do c)</button></div>
+    <div class="sol">Od 1 do 999 jest 999 liczb. Odejmujemy liczbę 1 (ani pierwsza, ani złożona) i 168 liczb pierwszych: 999 − 1 − 168 = 830.</div></div>
+  <div class="zad" data-check><span class="nr">3.</span> a) Liczba 2003 jest liczbą pierwszą. Wypisz jej dzielniki: <input class="a w" data-mode="set" data-ans="1,2003"><br>
+    b) Jakie cyfry na pewno <b>nie mogą</b> być cyframi jedności liczby pierwszej większej od 10? <input class="a w" data-mode="set" data-ans="0,2,4,5,6,8">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">4.</span> Które zdania są prawdziwe?
+    <div class="tf"><span class="circ">1</span><span class="txt">Każda liczba parzysta większa od 2 jest złożona.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">2</span><span class="txt">Iloczyn dwóch liczb pierwszych jest liczbą złożoną.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">3</span><span class="txt">Liczba 1 jest najmniejszą liczbą pierwszą.</span><span class="choose" data-ans="F"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">4</span><span class="txt">Suma dwóch nieparzystych liczb pierwszych jest liczbą pierwszą.</span><span class="choose" data-ans="F"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="tf"><span class="circ">5</span><span class="txt">Liczba 2 jest jedyną parzystą liczbą pierwszą.</span><span class="choose" data-ans="P"><span class="chip">P</span><span class="chip">F</span></span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">5.</span> Liczba 31 jest liczbą pierwszą. Znajdź NWD(100, 31) = <input class="a" data-ans="1">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr star">6.</span> Wśród dziewięciu liczb są cztery liczby pierwsze. Kliknij je.
+    <div class="pick" data-ans="103,827,1993,2027"><span class="chip">5371</span><span class="chip">111 111</span><span class="chip">103</span><span class="chip">6981</span><span class="chip">70 707</span><span class="chip">827</span><span class="chip">1993</span><span class="chip">42 983</span><span class="chip">2027</span></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="super"><span class="tag">super zagadka</span>
+    Ile dzielników ma kwadrat liczby pierwszej (np. 7 · 7 = 49)? <input class="a" data-ans="3" id="sz4">
+    <div class="row"><button class="btn chk" data-target="sz4">Sprawdź</button><span class="fb"></span><button class="btn sec rev">Rozwiązanie</button></div>
+    <div class="sol">Jeśli p jest pierwsza, to dzielnikami p · p są tylko: 1, p i p · p. Razem <b>3</b>. (A sześcian p · p · p ma 4 dzielniki: 1, p, p · p, p · p · p.)</div></div>
+  <div class="footer-band"><span>Liczby pierwsze i liczby złożone</span><span>Własności liczb naturalnych</span></div>
+</section>
+
+<!-- ======================= ROZKŁAD ======================= -->
+<section class="page" id="p-rozklad">
+  <div class="band"><h1>Rozkład na czynniki pierwsze</h1><div class="sub">lekcja dodatkowa ★ – tak jak w „Matematyce z kluczem” (Nowa Era)</div></div>
+  <p>W podręczniku Nowej Ery dla klasy 5 po liczbach pierwszych uczniowie uczą się jeszcze <b>rozkładać liczby na czynniki pierwsze</b>. To bardzo przydaje się przy NWD i NWW!</p>
+  <div class="theory">Każdą liczbę złożoną można zapisać jako <b>iloczyn liczb pierwszych</b>. Taki zapis to <b class="key">rozkład na czynniki pierwsze</b>.<br>
+    Np. 60 = 2 · 2 · 3 · 5, &nbsp; 84 = 2 · 2 · 3 · 7, &nbsp; 45 = 3 · 3 · 5.</div>
+  <div class="grid2">
+    <div>
+      <p><b>Jak to zrobić?</b> Zapisujemy liczbę, obok stawiamy kreskę. Dzielimy przez najmniejszą liczbę pierwszą, przez którą się da (2, 3, 5, 7, …). Wynik piszemy pod spodem i powtarzamy, aż dojdziemy do 1.</p>
+      <div class="card"><div class="row"><b>Rozłóż liczbę:</b> <input class="a" id="rN" value="60"> <button class="btn sec" id="rGo">Rozłóż</button></div><div id="rOut"></div></div>
+    </div>
+    <div class="card">
+      <b>NWD i NWW z rozkładu</b> (przykład: 24 i 36)
+      <div class="mono" style="font-size:18px;margin:8px 0">24 = <span class="hl">2 · 2</span> · 2 · <span class="hl">3</span><br>36 = <span class="hl">2 · 2</span> · <span class="hl">3</span> · 3</div>
+      <p style="margin:4px 0"><b>NWD</b> = iloczyn czynników <b>wspólnych</b>: 2 · 2 · 3 = <b>12</b></p>
+      <p style="margin:4px 0"><b>NWW</b> = rozkład jednej liczby · czynniki drugiej, których brakuje: 2 · 2 · 2 · 3 · 3 = <b>72</b></p>
+    </div>
+  </div>
+  <div class="zad-head">ZADANIA</div>
+  <div class="zad" data-check><span class="nr">1.</span> Rozłóż liczby na czynniki pierwsze (wpisz czynniki oddzielone kropką, spacją albo przecinkiem, np. 2·3·3).
+    <div class="row">18 = <input class="a w" data-mode="fact" data-ans="18"> 45 = <input class="a w" data-mode="fact" data-ans="45"></div>
+    <div class="row">72 = <input class="a w" data-mode="fact" data-ans="72"> 100 = <input class="a w" data-mode="fact" data-ans="100"></div>
+    <div class="row">126 = <input class="a w" data-mode="fact" data-ans="126"> 210 = <input class="a w" data-mode="fact" data-ans="210"></div>
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">2.</span> Jaka liczba ma rozkład: a) 2 · 3 · 3 · 5 = <input class="a" data-ans="90"> b) 2 · 2 · 2 · 7 = <input class="a" data-ans="56"> c) 3 · 5 · 11 = <input class="a" data-ans="165">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr">3.</span> Korzystając z rozkładu, oblicz: NWD(12, 18) = <input class="a" data-ans="6"> NWW(12, 18) = <input class="a" data-ans="36"> NWD(30, 45) = <input class="a" data-ans="15"> NWW(30, 45) = <input class="a" data-ans="90">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="zad" data-check><span class="nr star">4.</span> Uzupełnij rozkład: 168 = 2 · 2 · 2 · ▢ · 7 → <input class="a" data-ans="3"> &nbsp; 330 = 2 · ▢ · 5 · 11 → <input class="a" data-ans="3">
+    <div class="row"><button class="btn chk">Sprawdź</button><span class="fb"></span></div></div>
+  <div class="footer-band"><span>Rozkład na czynniki pierwsze</span><span>Własności liczb naturalnych</span></div>
+</section>
+
+<!-- ======================= TESTY ======================= -->
+<section class="page" id="p-testy">
+  <div class="band"><h1>Testy</h1><div class="sub">za każdym razem inne zadania</div></div>
+  <div id="testMenu">
+    <div class="card row" id="nameBar" style="justify-content:space-between"></div>
+    <p>Wybierz test. Każdy test składa się z losowo wygenerowanych zadań – po odświeżeniu strony albo kliknięciu „Nowy test” dostaniesz <b>zupełnie inne liczby i pytania</b>. Po każdej odpowiedzi od razu zobaczysz, czy jest dobra, i krótkie wyjaśnienie.</p>
+    <div class="tests-grid" id="testCards"></div>
+  </div>
+  <div id="quizBox" style="display:none"></div>
+  <div class="footer-band"><span>Testy</span><span>Własności liczb naturalnych</span></div>
+</section>
+</main>
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ===================== USTAWIENIA =====================
+   Adres aplikacji Google Apps Script (kończy się na /exec).
+   Puste = wyniki nie są nigdzie wysyłane. */
+const RESULTS_URL = 'https://script.google.com/macros/s/AKfycbwzhfQZLaH90agww8eEJZ09o1CAbHNvXWzo7sGCKFSGmAsb0ro_UkeDaE5TvQrXiplp/exec';
+/* ===================== helpers ===================== */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const gcd=(a,b)=>b?gcd(b,a%b):a, lcm=(a,b)=>a/gcd(a,b)*b;
+const divisors=n=>{const d=[];for(let i=1;i<=n;i++)if(n%i===0)d.push(i);return d};
+const isPrime=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true};
+const factor=n=>{const f=[];let d=2;while(d*d<=n){while(n%d===0){f.push(d);n/=d}d++}if(n>1)f.push(n);return f};
+const digitSum=n=>String(n).split('').reduce((s,c)=>s+(+c),0);
+const fmt=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+const nums=s=>{s=String(s).trim();
+  if(/[,;]/.test(s))return s.split(/[,;]/).flatMap(p=>(p.replace(/[\s\u202F\u00A0]/g,'').match(/\d+/g)||[]).map(Number));
+  if(/^\d{1,3}([ \u202F\u00A0]\d{3})+$/.test(s))s=s.replace(/[ \u202F\u00A0]/g,'');
+  return (s.match(/\d+/g)||[]).map(Number)};
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ===================== routing ===================== */
+function route(){
+  const id=(location.hash||'#start').slice(1);
+  const page=document.getElementById('p-'+id)?id:'start';
+  $$('section.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+page));
+  $$('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+page));
+  $$('video').forEach(v=>{if(!v.closest('.on'))v.pause()});
+  window.scrollTo({top:0,behavior:'instant'});
+  if(page==='testy'&&!Q){showMenu()}
+}
+window.addEventListener('hashchange',route);
+
+/* ===================== exercise checking ===================== */
+const FN={
+  three65:v=>{const n=+v;return n>=100&&n<=999&&n%30===0},
+  pair9:v=>{const a=nums(v);return a.length===2&&a.every(x=>x>0&&x<30)&&gcd(a[0],a[1])===9},
+  by3not9:v=>{const n=+v;return n>=100&&n<=999&&n%3===0&&n%9!==0},
+  by15:v=>{const n=+v;return n>=100&&n<=999&&n%15===0},
+  c15a4:v=>+v>=1000&&+v<=9999&&+v%20===0, c15a5:v=>+v>=10000&&+v<=99999&&+v%20===0,
+  c15b4:v=>+v>=1000&&+v<=9999&&+v%6===0, c15b5:v=>+v>=10000&&+v<=99999&&+v%6===0,
+  c15c4:v=>+v>=1000&&+v<=9999&&+v%3===0&&+v%9!==0, c15c5:v=>+v>=10000&&+v<=99999&&+v%3===0&&+v%9!==0,
+  composites:v=>{const a=nums(v);return a.length>=3&&a.every(x=>x>1&&!isPrime(x))},
+  primes:v=>{const a=nums(v);return a.length>=3&&a.every(isPrime)}
+};
+function checkInput(inp){
+  const v=inp.value.trim(), m=inp.dataset.mode||'num', ans=inp.dataset.ans;
+  if(!v) return false;
+  const setEq=(a,b)=>{a=[...new Set(a)].sort((x,y)=>x-y);b=[...new Set(b)].sort((x,y)=>x-y);return a.length===b.length&&a.every((x,i)=>x===b[i])};
+  switch(m){
+    case 'num': return nums(v).length===1&&nums(v)[0]===+ans&&/^[\d\s ]+$/.test(v);
+    case 'set': return setEq(nums(v),ans.split(',').map(Number));
+    case 'setl': {const a=(v.toUpperCase().match(/[A-Z]/g)||[]).sort().join(''), b=ans.split(',').sort().join('');return [...new Set(a)].join('')===[...new Set(b)].join('')}
+    case 'multiples': {const a=nums(v),k=+ans;return a.length>=2&&a.every(x=>x%k===0)}
+    case 'divisor': {const n=+ans,x=nums(v)[0];return x>1&&x<n&&n%x===0}
+    case 'fact': {const a=nums(v);return a.length>0&&a.every(isPrime)&&a.reduce((p,x)=>p*x,1)===+ans}
+    case 'text': return v.toUpperCase().replace(/\s/g,'')===ans.toUpperCase();
+    case 'fn': return FN[inp.dataset.fn](v);
+  }
+}
+function checkBlock(block){
+  let ok=0,all=0;
+  $$('input.a',block).forEach(inp=>{all++;const r=checkInput(inp);inp.classList.toggle('ok',r);inp.classList.toggle('bad',!r);if(r)ok++;});
+  $$('.pick',block).forEach(p=>{all++;const ans=p.dataset.ans.split(',');let good=true;
+    $$('.chip',p).forEach(c=>{const val=nums(c.textContent).join('')||c.textContent.trim();const should=ans.includes(String(val));const sel=c.classList.contains('sel');
+      c.classList.remove('good','wrong','miss');
+      if(sel&&should)c.classList.add('good');else if(sel&&!should){c.classList.add('wrong');good=false}else if(!sel&&should){good=false}});
+    if(good)ok++;});
+  $$('.choose',block).forEach(p=>{all++;const sel=$$('.chip.sel',p)[0];$$('.chip',p).forEach(c=>c.classList.remove('good','wrong'));
+    if(sel){const r=sel.textContent.trim()===p.dataset.ans;sel.classList.add(r?'good':'wrong');if(r)ok++}});
+  $$('table input.a',block);
+  const fb=$('.fb',block);
+  if(fb){fb.className='fb '+(ok===all?'ok':'bad');fb.textContent=ok===all?'Brawo! Wszystko dobrze 🎉':`Dobrze: ${ok} z ${all}. Popraw czerwone pola.`}
+  if(ok===all&&all>0)burst(18);
+}
+document.addEventListener('click',e=>{
+  const chip=e.target.closest('.chip');
+  if(chip&&chip.parentElement.classList.contains('pick')){
+    const p=chip.parentElement; if(p.hasAttribute('data-single'))$$('.chip',p).forEach(c=>c!==chip&&c.classList.remove('sel'));
+    chip.classList.toggle('sel');chip.classList.remove('good','wrong');}
+  if(chip&&chip.parentElement.classList.contains('choose')){$$('.chip',chip.parentElement).forEach(c=>c.classList.remove('sel','good','wrong'));chip.classList.add('sel')}
+  const b=e.target.closest('.chk'); if(b){checkBlock(b.closest('[data-check],.super'))}
+  const r=e.target.closest('.rev'); if(r){const s=$('.sol',r.closest('[data-check],.super'));if(s)s.classList.toggle('show')}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input.a')){const blk=e.target.closest('[data-check],.super');if(blk&&$('.chk',blk))checkBlock(blk)}});
+
+/* ===================== confetti ===================== */
+function burst(n=60){const box=$('#confetti');const cols=['#ee7f22','#ffd54f','#5fa83a','#2f8fd1','#e0533d','#8a5cc4'];
+  for(let i=0;i<n;i++){const el=document.createElement('i');el.style.left=Math.random()*100+'vw';el.style.background=pick(cols);el.style.animationDuration=(1.6+Math.random()*1.6)+'s';el.style.animationDelay=Math.random()*.3+'s';box.appendChild(el);setTimeout(()=>el.remove(),3600)}}
+
+/* ===================== lesson widgets ===================== */
+// glasses
+(function(){const g=$('#glassAnim');[0,6,12,18,24,30].forEach((n,i)=>{const s=document.createElement('span');s.textContent=n;s.style.opacity=0;g.appendChild(s);setTimeout(()=>{s.style.transition='.5s';s.style.opacity=1},300+i*350)});const s=document.createElement('span');s.textContent='…';g.appendChild(s)})();
+// strips svg
+(function(){const svg=$('#stripsSvg');const u=9.5;let h='';
+  const row=(y,len,n,col)=>{for(let i=0;i<n;i++)h+=`<rect x="${10+i*len*u}" y="${y}" width="${len*u}" height="22" fill="${col}" stroke="#fff" stroke-width="1.5" rx="2"/><text x="${10+i*len*u+len*u/2}" y="${y+16}" font-size="13" text-anchor="middle" fill="#333">${len} cm</text>`};
+  row(4,12,3,'#c5e1a5');row(30,14,3,'#ef9a8a');row(70,12,5,'#c5e1a5');row(96,14,4,'#ef9a8a');svg.innerHTML=h})();
+// multiples widget
+function showMults(){const a=+$('#mA').value,b=+$('#mB').value,o=$('#mOut');if(!(a>0&&b>0&&a<=200&&b<=200)){o.textContent='Wpisz liczby od 1 do 200.';return}
+  const L=lcm(a,b),lim=Math.max(L*2,a*12,b*12),lim2=Math.min(lim,Math.max(a,b)*40);
+  const mk=k=>{let s='';for(let m=0;m<=lim2;m+=k){const c=m>0&&m%a===0&&m%b===0;s+=`<span class="${c?'c':''}${m===L?' first':''}">${m}</span>`}return s};
+  o.innerHTML=`<p><b>Wielokrotności liczby ${a}:</b></p><div class="mults">${mk(a)}</div><p><b>Wielokrotności liczby ${b}:</b></p><div class="mults">${mk(b)}</div><p>Wspólne (różne od 0) są podświetlone. <b style="font-size:20px">NWW(${a}, ${b}) = ${L}</b></p>`}
+$$('input.a[data-mode=set],input.a[data-mode=multiples]').forEach(i=>{if(!i.placeholder)i.placeholder='oddziel przecinkami'});
+$('#mGo').onclick=showMults;showMults();
+// divisor pairs widget
+function showPairs(){const n=+$('#dN').value,o=$('#dOut');if(!(n>0&&n<=400)){o.textContent='Wpisz liczbę od 1 do 400.';return}
+  let h='<div class="pairs">';const ds=[];let k=0;
+  for(let i=1;i*i<=n;i++)if(n%i===0){const j=n/i;ds.push(i,j);const sc=Math.min(1,26/Math.sqrt(n));h+=`<div class="pair" style="animation-delay:${k++*.25}s"><span class="mono" style="min-width:110px;font-size:20px">${n} = ${i} · ${j}</span><span class="bx" style="--w:${Math.min(j*10,560)}px;--h:${i*10}px"></span></div>`}
+  const all=[...new Set(ds)].sort((x,y)=>x-y);
+  h+=`</div><p>Dzielniki liczby ${n}: <b>${all.join(', ')}</b> – razem ${all.length}.</p>`;o.innerHTML=h}
+$('#dGo').onclick=showPairs;showPairs();
+// gcd widget
+function showGcd(){const a=+$('#gA').value,b=+$('#gB').value,o=$('#gOut');if(!(a>0&&b>0&&a<=1000&&b<=1000)){o.textContent='Wpisz liczby od 1 do 1000.';return}
+  const da=divisors(a),db=divisors(b),g=gcd(a,b);
+  const mk=(d,other)=>d.map(x=>`<span class="${other.includes(x)?'c':''}${x===g?' first':''}">${x}</span>`).join('');
+  o.innerHTML=`<p><b>Dzielniki ${a}:</b></p><div class="mults">${mk(da,db)}</div><p><b>Dzielniki ${b}:</b></p><div class="mults">${mk(db,da)}</div><p><b style="font-size:20px">NWD(${a}, ${b}) = ${g}</b></p>`}
+$('#gGo').onclick=showGcd;showGcd();
+// table G
+(function(){const ns=[18,36,47,58,702,819,974,4042];let h='<tr><th>Liczba</th>'+ns.map(n=>`<th>${n}</th>`).join('')+'</tr>';
+  h+='<tr><th><i>Czy jest podzielna przez 9?</i></th>'+ns.map(n=>`<td><input class="a" data-mode="text" data-ans="${n%9?'nie':'tak'}" placeholder="tak/nie"></td>`).join('')+'</tr>';
+  h+='<tr><th><i>Ile wynosi suma cyfr?</i></th>'+ns.map(n=>`<td><input class="a" data-ans="${digitSum(n)}"></td>`).join('')+'</tr>';
+  h+='<tr><th><i>Czy suma cyfr jest podzielna przez 9?</i></th>'+ns.map(n=>`<td><input class="a" data-mode="text" data-ans="${digitSum(n)%9?'nie':'tak'}" placeholder="tak/nie"></td>`).join('')+'</tr>';
+  $('#tabG').innerHTML=h})();
+// divisibility detector
+function detect(){const s=$('#cN').value.replace(/\D/g,''),o=$('#cOut');if(!s){o.innerHTML='';return}
+  const n=BigInt(s),last=s.slice(-1),two=s.slice(-2),ds=digitSum(s);
+  const rows=[[2,`ostatnia cyfra: ${last}`],[3,`suma cyfr: ${ds}`],[4,`dwie ostatnie cyfry: ${two}`],[5,`ostatnia cyfra: ${last}`],[9,`suma cyfr: ${ds}`],[10,`ostatnia cyfra: ${last}`],[25,`dwie ostatnie cyfry: ${two}`],[100,`dwie ostatnie cyfry: ${two}`]];
+  o.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px">'+rows.map(([k,why])=>{const ok=n%BigInt(k)===0n;return `<div style="padding:8px 12px;border-radius:12px;background:${ok?'#e5f6d9':'#fbeae7'}"><b>przez ${k}: ${ok?'✓ tak':'✗ nie'}</b><br><span class="small">${why}</span></div>`}).join('')+'</div>'}
+$('#cN').addEventListener('input',detect);detect();
+// sieve
+let sv={step:0};const PR=[2,3,5,7];
+function sieveInit(){const g=$('#sieve');g.innerHTML='';for(let k=1;k<=100;k++){const d=document.createElement('div');d.textContent=k;d.id='sv'+k;g.appendChild(d)}sv.step=0;$('#sMsg').textContent='Zaczynamy od liczby 1.'}
+function sieveStep(){const s=sv.step;
+  if(s===0){$('#sv1').classList.add('one');$('#sMsg').textContent='1 nie jest ani pierwsza, ani złożona – odkładamy ją.'}
+  else if(s<=4){const p=PR[s-1];$('#sv'+p).classList.add('p');let t=0;for(let m=2*p;m<=100;m+=p){const el=$('#sv'+m);if(!el.classList.contains('x'))setTimeout(()=>el.classList.add('x'),t+=25)}$('#sMsg').textContent=`${p} jest pierwsza. Skreślamy wszystkie jej wielokrotności.`}
+  else if(s===5){let t=0;for(let k=2;k<=100;k++){const el=$('#sv'+k);if(!el.classList.contains('x')&&!el.classList.contains('p'))setTimeout(()=>el.classList.add('p'),t+=40)}$('#sMsg').textContent='Wszystkie nieskreślone liczby to liczby pierwsze! Jest ich 25.';burst(40)}
+  else return;sv.step++}
+$('#sStep').onclick=sieveStep;$('#sReset').onclick=sieveInit;sieveInit();
+// primes < 1000
+$('#p1000').innerHTML=Array.from({length:1000},(_,i)=>i).filter(isPrime).map(p=>`<span>${p}</span>`).join('');
+// factor ladder
+function ladder(){const n=+$('#rN').value,o=$('#rOut');if(!(n>1&&n<=100000)){o.textContent='Wpisz liczbę od 2 do 100 000.';return}
+  let x=n,h='<div class="ladder">',k=0;const f=factor(n);for(const p of f){h+=`<div style="animation-delay:${k*.2}s">${x}</div><div style="animation-delay:${k++*.2+.1}s">${p}</div>`;x/=p}h+=`<div style="animation-delay:${k*.2}s">1</div><div></div></div>`;
+  o.innerHTML=h+`<p><b>${n} = ${f.join(' · ')}</b>${f.length===1?' – to liczba pierwsza!':''}</p>`}
+$('#rGo').onclick=ladder;ladder();
+
+/* ===================== test generators ===================== */
+const KR={2:'dwukrotność',3:'trzykrotność',4:'czterokrotność',5:'pięciokrotność',6:'sześciokrotność',7:'siedmiokrotność',8:'ośmiokrotność',9:'dziewięciokrotność'};
+const inst=w=>w.replace(/ść$/,'ścią'), gen_=w=>w.replace(/ść$/,'ści');
+const TF=(text,truth,expl)=>({text:`Prawda czy fałsz? <br><i>„${text}”</i>`,type:'choice',options:['Prawda','Fałsz'],correct:truth?0:1,expl});
+function choiceQ(text,correct,wrongs,expl){const opts=shuffle([correct,...wrongs]);return{text,type:'choice',options:opts.map(String),correct:opts.indexOf(correct),expl}}
+function notMult(k,near){let x;do{x=near+rand(-k*2,k*2)}while(x<=1||x%k===0);return x}
+function uniqWrong(gen,n,correct){const s=new Set();let guard=0;while(s.size<n&&guard++<200){const v=gen();if(v!==correct)s.add(v)}return[...s]}
+
+const GEN={
+ W:[
+  ()=>{const k=rand(3,12),c=k*rand(3,15);return choiceQ(`Która z liczb jest wielokrotnością liczby <b>${k}</b>?`,c,uniqWrong(()=>notMult(k,c),3,c),`${c} = ${k} · ${c/k}. Pozostałe liczby nie dzielą się przez ${k} bez reszty.`)},
+  ()=>{let a,b;do{a=rand(2,15);b=rand(2,15)}while(a===b);const L=lcm(a,b);const big=Math.max(a,b),sm=Math.min(a,b);const list=[];for(let m=big;m<=L;m+=big)list.push(m);return{text:`Oblicz <b>NWW(${a}, ${b})</b>.`,type:'num',ans:L,expl:`Wypisujemy wielokrotności większej liczby: ${list.join(', ')} – pierwsza, która dzieli się przez ${sm}, to <b>${L}</b>.`}},
+  ()=>{const k=pick([15,20,25,30,40,45,50,60,70]),N=rand(100,600);const a=(Math.floor(N/k)+1)*k;return{text:`Znajdź <b>najmniejszą</b> liczbę większą od ${N}, która jest wielokrotnością liczby ${k}.`,type:'num',ans:a,expl:`${a} = ${k} · ${a/k}, a poprzednia wielokrotność ${a-k} nie jest większa od ${N}.`}},
+  ()=>{const k=pick([15,20,25,30,35,40,45,60,80]),N=rand(150,700);const a=Math.floor((N-1)/k)*k;return{text:`Znajdź <b>największą</b> liczbę mniejszą od ${N}, która jest wielokrotnością liczby ${k}.`,type:'num',ans:a,expl:`${a} = ${k} · ${a/k}; następna wielokrotność ${a+k} jest już ≥ ${N}.`}},
+  ()=>{const k=pick([6,8,9,12,15,25,40]),m=rand(3,15),B=k*m,next=Math.random()<.5;return{text:`Liczby A, B, C to <b>kolejne</b> wielokrotności liczby ${k}. B = ${B}. Ile wynosi ${next?'C':'A'}?`,type:'num',ans:next?B+k:B-k,expl:`Kolejne wielokrotności liczby ${k} różnią się o ${k}: A = ${B-k}, B = ${B}, C = ${B+k}.`}},
+  ()=>pick([
+    TF('Liczba 0 jest wielokrotnością każdej liczby naturalnej.',1,'0 = k · 0 dla każdej liczby k.'),
+    TF('Każda wielokrotność liczby 6 jest wielokrotnością liczby 3.',1,'6 · n = 3 · (2 · n).'),
+    TF('Każda wielokrotność liczby 3 jest wielokrotnością liczby 6.',0,'Np. 9 jest wielokrotnością 3, ale nie 6.'),
+    TF('Każda liczba naturalna jest wielokrotnością liczby 1.',1,'n = 1 · n.'),
+    TF('Nie ma liczb parzystych, które są wielokrotnościami liczby 5.',0,'Np. 10 jest parzysta i jest wielokrotnością 5.'),
+    TF('Każda liczba nieparzysta jest wielokrotnością liczby 3.',0,'Np. 7 nie dzieli się przez 3.'),
+    TF('Każda wielokrotność liczby 10 jest liczbą parzystą.',1,'10 · n = 2 · (5 · n).'),
+    TF('Liczba 7 jest wielokrotnością liczby 14.',0,'To odwrotnie: 14 jest wielokrotnością 7.'),
+    TF('Każda wielokrotność liczby 4 jest wielokrotnością liczby 2.',1,'4 · n = 2 · (2 · n).')]),
+  ()=>{let a,b,n;do{a=rand(2,9);b=rand(2,9)}while(a===b);n=b*rand(2,10);const x=a*n/b;const w=KR[a][0].toUpperCase()+KR[a].slice(1);return{text:`${w} liczby ${n} jest ${inst(KR[b])} pewnej liczby. Jaka to liczba?`,type:'num',ans:x,expl:`${a} · ${n} = ${a*n}, a ${a*n} : ${b} = ${x}.`}},
+  ()=>{const a=rand(4,9),b=rand(2,a-1),x=rand(2,15),R=(a-b)*x;return{text:`Od ${gen_(KR[a])} pewnej liczby odjęto ${KR[b]} tej liczby i otrzymano ${R}. O jakiej liczbie mowa?`,type:'num',ans:x,expl:`${a} · x − ${b} · x = ${a-b} · x = ${R}, więc x = ${R} : ${a-b} = ${x}.`}},
+  ()=>{let a,b;do{a=pick([6,8,9,10,12,14,15,16,18,20]);b=pick([6,8,9,10,12,14,15,16,18,20])}while(a===b||lcm(a,b)>180);return{text:`Zielony pasek układamy z klocków o długości ${a} cm, a czerwony z klocków o długości ${b} cm. Jaka jest <b>najmniejsza</b> długość (w cm), przy której oba paski będą równe?`,type:'num',ans:lcm(a,b),expl:`Potrzebna jest najmniejsza wspólna wielokrotność: NWW(${a}, ${b}) = ${lcm(a,b)}.`}},
+  ()=>{let k,a,b,sol;do{k=pick([23,26,34,38,43,47,52,57]);a=rand(2,9);b=rand(0,9);sol=[...Array(10).keys()].filter(d=>(a*100+d*10+b)%k===0)}while(sol.length!==1);const d=sol[0],N=a*100+d*10+b;return{text:`Trzycyfrowa liczba <b>${a}▢${b}</b> jest wielokrotnością liczby ${k}. Jaką cyfrę trzeba wpisać w okienko?`,type:'num',ans:d,expl:`${N} = ${k} · ${N/k}.`}},
+  ()=>{let t;do{t=shuffle([2,3,4,5,6,8,9,10]).slice(0,3)}while(lcm(lcm(t[0],t[1]),t[2])>120);const L=lcm(lcm(t[0],t[1]),t[2]);return{text:`Oblicz <b>NWW(${t.join(', ')})</b>.`,type:'num',ans:L,expl:`${L} to najmniejsza liczba (różna od 0), która dzieli się przez ${t.join(', ')}.`}},
+ ],
+ D:[
+  ()=>{const n=pick([12,16,18,20,24,28,30,36,40,45,48,50,60,64,72,100]);const d=divisors(n);return{text:`Ile dzielników ma liczba <b>${n}</b>?`,type:'num',ans:d.length,expl:`Dzielniki ${n}: ${d.join(', ')} – razem ${d.length}.`}},
+  ()=>{const n=pick([24,30,36,40,48,60,72,84,90,96]);const d=divisors(n).filter(x=>x>1&&x<n);const nd=[];for(let x=2;x<n;x++)if(n%x)nd.push(x);const c=pick(nd.filter(x=>x<n/2+5));return choiceQ(`Która liczba <b>NIE</b> jest dzielnikiem liczby ${n}?`,c,shuffle(d).slice(0,3),`${n} : ${c} daje resztę ${n%c}. Dzielniki ${n}: ${divisors(n).join(', ')}.`)},
+  ()=>{let g,x,y;do{g=rand(2,12);x=rand(1,8);y=rand(2,9)}while(x===y||gcd(x,y)!==1);const a=g*x,b=g*y;return{text:`Oblicz <b>NWD(${a}, ${b})</b>.`,type:'num',ans:g,expl:`Wspólne dzielniki ${a} i ${b}: ${divisors(g).join(', ')}. Największy to ${g}.`}},
+  ()=>{const n=pick([6,8,10,12,14,15,16,18,20,21,25,28]);const d=divisors(n);const s=d.reduce((a,b)=>a+b,0);return{text:`Oblicz sumę <b>wszystkich</b> dzielników liczby ${n}.`,type:'num',ans:s,expl:`${d.join(' + ')} = ${s}.`}},
+  ()=>{let g,x,y;do{g=rand(3,12);x=rand(2,7);y=rand(2,7)}while(x===y||gcd(x,y)!==1);const f=pick([['jabłek','gruszek'],['cukierków','lizaków'],['niebieskich kredek','czerwonych kredek'],['naklejek z psami','naklejek z kotami']]);return{text:`Mamy ${g*x} ${f[0]} i ${g*y} ${f[1]}. Chcemy ze <b>wszystkich</b> ułożyć jednakowe zestawy. Ile najwięcej zestawów można ułożyć?`,type:'num',ans:g,expl:`Liczba zestawów musi dzielić ${g*x} i ${g*y}: NWD(${g*x}, ${g*y}) = ${g}.`}},
+  ()=>{let g,x,y;do{g=rand(2,9);x=rand(2,6);y=rand(3,8)}while(x>=y||gcd(x,y)!==1);return{text:`Kartkę ${g*x} cm × ${g*y} cm tniemy na jednakowe kwadraty o boku w pełnych centymetrach (bez odpadów). Jaki najdłuższy bok (w cm) mogą mieć kwadraty?`,type:'num',ans:g,expl:`Bok musi dzielić ${g*x} i ${g*y}: NWD = ${g}.`}},
+  ()=>{const k=pick([25,40,50,75,125,150,200,250]);const c=Math.floor(999/k)-Math.floor(99/k);return{text:`Ile jest liczb <b>trzycyfrowych</b>, których dzielnikiem jest ${k}?`,type:'num',ans:c,expl:`Pierwsza: ${k*(Math.floor(99/k)+1)}, ostatnia: ${k*Math.floor(999/k)}. To wielokrotności ${k} od ${Math.floor(99/k)+1}. do ${Math.floor(999/k)}. – razem ${c}.`}},
+  ()=>pick([
+    TF('Liczba 1 jest dzielnikiem każdej liczby naturalnej.',1,'Każda liczba dzieli się przez 1.'),
+    TF('Liczba 2 jest dzielnikiem każdej liczby parzystej.',1,'Liczby parzyste to właśnie te, które dzielą się przez 2.'),
+    TF('Liczba 3 jest dzielnikiem każdej liczby nieparzystej.',0,'Np. 5 nie dzieli się przez 3.'),
+    TF('Każdy dzielnik liczby 24 jest dzielnikiem liczby 12.',0,'24 jest dzielnikiem 24, ale nie jest dzielnikiem 12.'),
+    TF('Każdy dzielnik liczby 12 jest dzielnikiem liczby 24.',1,'24 = 2 · 12, więc co dzieli 12, dzieli też 24.'),
+    TF('Liczba 1 ma dwa dzielniki.',0,'Liczba 1 ma tylko jeden dzielnik: 1.'),
+    TF('Liczba 13 ma dokładnie dwa dzielniki.',1,'1 i 13.')]),
+  ()=>{const n=pick([6,28,12,20,18,24,30,496]);const s=divisors(n).filter(d=>d<n);const sum=s.reduce((a,b)=>a+b,0);return{text:`<b>Liczba doskonała</b> jest równa sumie swoich dzielników mniejszych od niej. Czy ${n} jest liczbą doskonałą?`,type:'choice',options:['Tak','Nie'],correct:sum===n?0:1,expl:`${s.join(' + ')} = ${sum}${sum===n?' = '+n+' ✓':' ≠ '+n}.`}},
+  ()=>{const [a,b]=pick([[10,7],[6,5],[4,9],[8,3],[12,5],[15,4],[6,7]]);const l=lcm(a,b),x=Math.ceil(100/l)*l;return{text:`Znajdź najmniejszą liczbę <b>trzycyfrową</b>, której dzielnikami są liczby ${a} i ${b}.`,type:'num',ans:x,expl:`Musi to być wielokrotność NWW(${a}, ${b}) = ${l}. Najmniejsza trzycyfrowa: ${x}.`}},
+ ],
+ C:[
+  ()=>{const k=pick([2,3,4,5,9,10,25,100]);const rule={2:'ostatnia cyfra 0, 2, 4, 6 lub 8',3:'suma cyfr dzieli się przez 3',4:'dwie ostatnie cyfry tworzą liczbę podzielną przez 4',5:'ostatnia cyfra 0 lub 5',9:'suma cyfr dzieli się przez 9',10:'ostatnia cyfra 0',25:'dwie ostatnie cyfry to 00, 25, 50 lub 75',100:'dwie ostatnie cyfry to 00'}[k];
+    const c=k*rand(Math.ceil(1000/k),Math.floor(99999/k));const w=uniqWrong(()=>{let x;do{x=rand(1000,99999);if(k===100)x=Math.floor(x/10)*10}while(x%k===0);return x},3,c);
+    return {...choiceQ(`Która liczba jest podzielna przez <b>${k}</b>?`,fmt(c),w.map(fmt),`Cecha podzielności przez ${k}: ${rule}. ${fmt(c)} ją spełnia${k===3||k===9?' (suma cyfr '+digitSum(c)+')':''}.`)}},
+  ()=>{let digs,pos,d;do{digs=[rand(1,9),rand(0,9),rand(0,9),rand(0,9)];pos=rand(0,3);const s=digs.reduce((a,b)=>a+b,0)-digs[pos];d=(9-s%9)%9}while(d===0||(pos===0&&d===0));const show=digs.map((x,i)=>i===pos?'▢':x).join('');return{text:`Jaką cyfrę trzeba wpisać w okienko, żeby liczba <b>${show}</b> była podzielna przez 9?`,type:'num',ans:d,expl:`Suma pozostałych cyfr to ${digs.reduce((a,b)=>a+b,0)-digs[pos]}. Dopełniamy do wielokrotności 9: brakuje ${d}.`}},
+  ()=>{const k=pick([2,3,4,5,9,10]);const n=rand(1000,99999);const r=n%k;const why={2:`ostatnia cyfra ${n%10}`,5:`ostatnia cyfra ${n%10}`,10:`ostatnia cyfra ${n%10}`,4:`dwie ostatnie cyfry: ${n%100}, a ${n%100} : 4 daje resztę ${r}`,3:`suma cyfr ${digitSum(n)} daje z dzielenia przez 3 resztę ${r}`,9:`suma cyfr ${digitSum(n)} daje z dzielenia przez 9 resztę ${r}`}[k];return{text:`Nie wykonując dzielenia, podaj resztę z dzielenia liczby <b>${fmt(n)}</b> przez ${k}.`,type:'num',ans:r,expl:`Reszta = ${r}, bo ${why}.`}},
+  ()=>{const y=pick([1600,1700,1800,1900,2000,2024,2026,2028,1996,2100,1984,1985,2400,2030,1724,1850,2012,2019]);const leap=(y%4===0&&y%100!==0)||y%400===0;return{text:`Czy rok <b>${y}</b> jest przestępny?`,type:'choice',options:['Tak','Nie'],correct:leap?0:1,expl:y%100===0?`${y} dzieli się przez 100, więc musi jeszcze dzielić się przez 400 – ${y%400===0?'dzieli się, więc jest przestępny':'nie dzieli się, więc nie jest przestępny'}.`:`${y} ${y%4===0?'dzieli się':'nie dzieli się'} przez 4 (dwie ostatnie cyfry: ${String(y).slice(-2)}).`}},
+  ()=>{let L,c;do{L=rand(20,98)*100;c=[];for(let x=L+1;x<L+100;x++)if(x%90===0)c.push(x)}while(c.length!==1);return{text:`🤠 Zaginęła liczba! Jest większa od ${L} i mniejsza od ${L+100}, dzieli się przez 9 i przez 10. Jaka to liczba?`,type:'num',ans:c[0],expl:`Dzieli się przez 10, więc kończy się zerem; suma cyfr ma dzielić się przez 9: ${c[0]} (suma ${digitSum(c[0])}).`}},
+  ()=>pick([
+    TF('Każda liczba podzielna przez 9 jest podzielna przez 3.',1,'9 = 3 · 3, więc tak.'),
+    TF('Każda liczba podzielna przez 3 jest podzielna przez 9.',0,'Np. 12 dzieli się przez 3, ale nie przez 9.'),
+    TF('Każda liczba podzielna przez 3 jest nieparzysta.',0,'Np. 6 jest parzysta.'),
+    TF('Jeśli ostatnia cyfra liczby dzieli się przez 3, to liczba dzieli się przez 3.',0,'Np. 13 kończy się 3, a nie dzieli się przez 3.'),
+    TF('Liczba podzielna przez 10 jest podzielna przez 2 i przez 5.',1,'10 = 2 · 5.'),
+    TF('Każda liczba podzielna przez 100 jest podzielna przez 4.',1,'100 = 4 · 25.'),
+    TF('Każda liczba podzielna przez 4 jest podzielna przez 8.',0,'Np. 12 dzieli się przez 4, ale nie przez 8.')]),
+  ()=>{const k=pick([3,9]),S=rand(100,9999);return{text:`Suma cyfr pewnej liczby wynosi <b>${S}</b>. Czy ta liczba jest podzielna przez ${k}?`,type:'choice',options:['Tak','Nie'],correct:S%k===0?0:1,expl:`Wystarczy sprawdzić sumę cyfr: ${S} ${S%k===0?'dzieli się':'nie dzieli się'} przez ${k}${k===3?` (suma jej cyfr: ${digitSum(S)})`:` (suma jej cyfr: ${digitSum(S)})`}.`}},
+  ()=>{const [k,desc]=pick([[6,'przez 2 i przez 3'],[12,'przez 4 i przez 3'],[15,'przez 3 i przez 5'],[18,'przez 2 i przez 9'],[20,'przez 4 i przez 5']]);const c=k*rand(Math.ceil(1000/k),Math.floor(9999/k));return choiceQ(`Która liczba jest podzielna przez <b>${k}</b>?`,c,uniqWrong(()=>{let x;do{x=rand(1000,9999)}while(x%k===0);return x},3,c),`Liczba dzieli się przez ${k}, gdy dzieli się ${desc}. ${c} = ${k} · ${c/k}.`)},
+  ()=>{let digs,pos,ans;do{digs=[rand(1,9),rand(0,9),rand(0,9)];pos=rand(1,2);const s=digs.reduce((a,b)=>a+b,0)-digs[pos];ans=(3-s%3)%3}while(false);const show=digs.map((x,i)=>i===pos?'▢':x).join('');return{text:`Jaką <b>najmniejszą</b> cyfrę można wpisać w okienko, żeby liczba <b>${show}</b> była podzielna przez 3?`,type:'num',ans,expl:`Suma pozostałych cyfr: ${digs.reduce((a,b)=>a+b,0)-digs[pos]}. Najmniejsza cyfra, która dopełnia do wielokrotności 3, to ${ans}.`}},
+ ],
+ P:[
+  ()=>{const comp=[21,27,33,39,49,51,57,63,69,77,81,87,91,93,99,111,117,119,121,133,143,147,153,161,169,171,177,187];const pr=[11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199];const c=pick(pr);return choiceQ('Która z liczb jest <b>pierwsza</b>?',c,shuffle(comp).slice(0,3),`${c} ma tylko dwa dzielniki: 1 i ${c}. Pozostałe są złożone.`)},
+  ()=>{const comp=[21,27,33,39,49,51,57,63,69,77,87,91,93,111,119,121,133,143,161,169,187];const pr=[11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113];const c=pick(comp);const f=factor(c);return choiceQ('Która z liczb jest <b>złożona</b>?',c,shuffle(pr).slice(0,3),`${c} = ${f[0]} · ${c/f[0]}, więc ma więcej niż dwa dzielniki.`)},
+  ()=>{const n=pick([91,119,133,143,161,187,209,221,247,299,2316,4785,1818,2721,7413,3003,5151,1717,6006,8085]);const f=factor(n);return{text:`Podaj dowolny dzielnik liczby <b>${fmt(n)}</b> różny od 1 i od ${fmt(n)} (to pokazuje, że jest złożona).`,type:'num',check:v=>v>1&&v<n&&n%v===0,ans:f[0],expl:`Np. ${f[0]}: ${fmt(n)} = ${f[0]} · ${fmt(n/f[0])}.`}},
+  ()=>{const a=rand(1,8)*10,b=a+pick([20,30]);const ps=[];for(let k=a+1;k<b;k++)if(isPrime(k))ps.push(k);return{text:`Ile jest liczb pierwszych większych od ${a} i mniejszych od ${b}?`,type:'num',ans:ps.length,expl:`To: ${ps.join(', ')||'brak'}.`}},
+  ()=>pick([
+    TF('Każda liczba parzysta większa od 2 jest złożona.',1,'Dzieli się przez 2, więc ma co najmniej 3 dzielniki.'),
+    TF('Iloczyn dwóch liczb pierwszych jest liczbą złożoną.',1,'Np. 3 · 5 = 15 dzieli się przez 3 i 5.'),
+    TF('Liczba 1 jest najmniejszą liczbą pierwszą.',0,'1 nie jest liczbą pierwszą; najmniejsza pierwsza to 2.'),
+    TF('Suma dwóch nieparzystych liczb pierwszych jest liczbą pierwszą.',0,'3 + 5 = 8 – złożona (suma jest parzysta).'),
+    TF('Liczba 2 jest jedyną parzystą liczbą pierwszą.',1,'Inne parzyste dzielą się przez 2.'),
+    TF('Liczba 0 jest liczbą złożoną.',0,'0 i 1 nie są ani pierwsze, ani złożone.'),
+    TF('Każda liczba nieparzysta jest pierwsza.',0,'Np. 9 = 3 · 3.'),
+    TF('Liczba 51 jest pierwsza.',0,'51 = 3 · 17 (suma cyfr 6).')]),
+  ()=>{const p=pick([2,3,5,7]),k=pick([2,3]);const n=p**k;return{text:`Ile dzielników ma liczba <b>${n}</b> (${Array(k).fill(p).join(' · ')})?`,type:'num',ans:k+1,expl:`Dzielniki: ${divisors(n).join(', ')} – razem ${k+1}.`}},
+  ()=>{const p=pick([13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73]);let n;do{n=rand(30,200)}while(n%p===0);return{text:`Liczba ${p} jest pierwsza. Oblicz <b>NWD(${n}, ${p})</b>.`,type:'num',ans:1,expl:`${p} ma dzielniki tylko 1 i ${p}, a ${n} nie dzieli się przez ${p}, więc NWD = 1.`}},
+  ()=>{const n=rand(20,200);let q=n+1;while(!isPrime(q))q++;return{text:`Jaka jest najmniejsza liczba pierwsza <b>większa</b> od ${n}?`,type:'num',ans:q,expl:`Sprawdzamy kolejne liczby po ${n}: pierwszą liczbą pierwszą jest ${q}.`}},
+  ()=>{const c=pick([0,2,4,5,6,8]);return choiceQ('Którą cyfrą jedności <b>nie może</b> kończyć się liczba pierwsza większa od 10?',c,[1,3,7].concat([9]).slice(0,3),`Liczba kończąca się na ${c} dzieli się przez ${c===5?'5':c===0?'10':'2'}, więc jest złożona.`)},
+ ],
+ R:[
+  ()=>{let f;do{f=Array.from({length:rand(3,4)},()=>pick([2,2,3,3,5,7])).sort((a,b)=>a-b)}while(f.reduce((a,b)=>a*b)>500);const n=f.reduce((a,b)=>a*b);const i=rand(0,f.length-1);return{text:`Uzupełnij rozkład: <b>${n} = ${f.map((x,j)=>j===i?'▢':x).join(' · ')}</b>`,type:'num',ans:f[i],expl:`${n} = ${f.join(' · ')}.`}},
+  ()=>{const f=Array.from({length:rand(3,4)},()=>pick([2,2,3,3,5,7,11])).sort((a,b)=>a-b);const n=f.reduce((a,b)=>a*b);return{text:`Jaka liczba ma rozkład na czynniki pierwsze <b>${f.join(' · ')}</b>?`,type:'num',ans:n,expl:`${f.join(' · ')} = ${n}.`}},
+  ()=>{let n;do{n=rand(24,300)}while(isPrime(n));const f=factor(n);return{text:`Ile czynników (licząc powtórzenia) ma rozkład liczby <b>${n}</b> na czynniki pierwsze?`,type:'num',ans:f.length,expl:`${n} = ${f.join(' · ')} – ${f.length} czynniki.`}},
+  ()=>{let n;do{n=rand(30,400)}while(isPrime(n));const f=factor(n);return{text:`Jaki jest <b>największy</b> czynnik pierwszy liczby ${n}?`,type:'num',ans:f[f.length-1],expl:`${n} = ${f.join(' · ')}.`}},
+  ()=>{let g,x,y;do{g=pick([4,6,10,12,15]);x=pick([2,3,5,7]);y=pick([2,3,5,7])}while(x===y);const a=g*x,b=g*y;return{text:`${a} = ${factor(a).join(' · ')}, &nbsp; ${b} = ${factor(b).join(' · ')}. Oblicz <b>NWD(${a}, ${b})</b>.`,type:'num',ans:gcd(a,b),expl:`Wspólne czynniki: ${factor(gcd(a,b)).join(' · ')} = ${gcd(a,b)}.`}},
+  ()=>{let a,b;do{a=pick([6,8,10,12,14,15,18,20]);b=pick([6,8,9,10,12,15,16,21])}while(a===b);return{text:`${a} = ${factor(a).join(' · ')}, &nbsp; ${b} = ${factor(b).join(' · ')}. Oblicz <b>NWW(${a}, ${b})</b>.`,type:'num',ans:lcm(a,b),expl:`NWW = ${factor(lcm(a,b)).join(' · ')} = ${lcm(a,b)}.`}},
+ ]
+};
+const TESTS=[
+  {id:'W',name:'Wielokrotności',ic:'🧱',c:'#5fa83a',n:10,link:'wiel',desc:'wielokrotności, NWW, paski'},
+  {id:'D',name:'Dzielniki',ic:'🍪',c:'#2f8fd1',n:10,link:'dziel',desc:'dzielniki, NWD, zestawy i kartki'},
+  {id:'C',name:'Cechy podzielności',ic:'🤖',c:'#ee7f22',n:10,link:'cechy',desc:'przez 2, 3, 4, 5, 9, 10, 25, 100; lata przestępne'},
+  {id:'P',name:'Liczby pierwsze i złożone',ic:'⭐',c:'#8a5cc4',n:10,link:'pierwsze',desc:'pierwsze, złożone, sito'},
+  {id:'R',name:'Rozkład na czynniki ★',ic:'🌳',c:'#c85f0e',n:8,link:'rozklad',desc:'lekcja dodatkowa (Nowa Era)'},
+  {id:'ALL',name:'Test zbiorczy',ic:'🏆',c:'#e0533d',n:16,link:'testy',desc:'wszystko razem – 16 zadań'}
+];
+function buildTest(t){
+  const take=(sec,k)=>{const gens=GEN[sec];let order=shuffle(gens.map((_,i)=>i));const out=[],seen=new Set();let i=0,guard=0;
+    while(out.length<k&&guard++<300){const gi=order[i%order.length];i++;if(i%order.length===0)order=shuffle(order);const q=gens[gi]();if(seen.has(q.text))continue;seen.add(q.text);q.sec=sec;out.push(q)}return out};
+  if(t.id==='ALL')return shuffle([...take('W',4),...take('D',4),...take('C',3),...take('P',3),...take('R',2)]);
+  return take(t.id,t.n);
+}
+/* ===================== quiz UI ===================== */
+let Q=null;
+function showMenu(){ Q=null;$('#testMenu').style.display='';$('#quizBox').style.display='none';renderNameBar();
+  $('#testCards').innerHTML=TESTS.map(t=>{const b=store.get('best_'+t.id);return `<div class="tcard" style="--c:${t.c}"><div style="font-size:34px">${t.ic}</div><h3>${t.name}</h3><p>${t.desc}<br>${t.n} zadań</p>${b!=null?`<div class="small" style="color:var(--green);font-weight:700;margin-bottom:8px">Najlepszy wynik: ${b}%</div>`:''}<button class="btn" onclick="startTest('${t.id}')">Rozpocznij ▸</button></div>`}).join('');
+  $('#homeTiles').innerHTML=TESTS.slice(0,5).map(t=>{const b=store.get('best_'+t.id);return `<a class="tile" href="#${t.link}"><div class="ic">${t.ic}</div><h3>${t.name}</h3><p>${t.desc}</p>${b!=null?`<div class="best">test: ${b}%</div>`:''}</a>`}).join('')+`<a class="tile" href="#testy"><div class="ic">🏆</div><h3>Testy</h3><p>po jednym do każdego działu + test zbiorczy</p></a>`;
+}
+function getName(){return store.get('student_name')||''}
+function renderNameBar(){const n=getName();$('#nameBar').innerHTML=n?`<span>👤 Rozwiązuje: <b>${esc(n)}</b></span><button class="btn sec" onclick="changeName()">Zmień</button>`:`<span>👤 Przed testem wpisz swoje imię.</span><button class="btn sec" onclick="changeName()">Wpisz imię</button>`;$('#nameBar').style.display=RESULTS_URL?'':'none'}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function askName(then){$('#testMenu').style.display='none';$('#quizBox').style.display='';
+  $('#quizBox').innerHTML=`<div class="quiz"><h2 style="margin-top:0">Jak masz na imię?</h2><p class="small">Twoje imię i wynik testu zobaczy tylko nauczyciel.</p><div class="row"><input class="qin" id="nameIn" style="width:260px;text-align:left" maxlength="40" autocomplete="off" value="${esc(getName())}" placeholder="np. Ania K."><button class="btn big" id="nameOk">Dalej ▸</button></div><div id="nameErr" class="fb bad"></div></div>`;
+  const go=()=>{const v=$('#nameIn').value.trim();if(v.length<2){$('#nameErr').textContent='Wpisz imię (co najmniej 2 litery).';return}store.set('student_name',v);then()};
+  $('#nameOk').onclick=go;$('#nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')go()});$('#nameIn').focus()}
+function changeName(){askName(showMenu)}
+function startTest(id){if(RESULTS_URL&&!getName()){askName(()=>startTest(id));return}
+  const t=TESTS.find(x=>x.id===id);Q={t,qs:buildTest(t),i:0,answers:[],t0:Date.now()};if(location.hash!=='#testy')location.hash='#testy';$('#testMenu').style.display='none';$('#quizBox').style.display='';renderQ();window.scrollTo({top:0})}
+function plain(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent.replace(/\s+/g,' ').trim()}
+async function sendResult(r){const el=$('#sendStatus');if(!RESULTS_URL||!el)return;
+  el.textContent='Wysyłam wynik do nauczyciela…';
+  const body=JSON.stringify(r);
+  try{const res=await fetch(RESULTS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body});const j=await res.json();if(!j.ok)throw 0;el.textContent='✓ Wynik zapisany u nauczyciela.';el.className='small fb ok'}
+  catch(e){try{await fetch(RESULTS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body});el.textContent='Wynik wysłany do nauczyciela.';el.className='small fb ok'}
+    catch(e2){el.textContent='Nie udało się wysłać wyniku (brak internetu?). Pokaż wynik nauczycielowi.';el.className='small fb bad'}}}
+function renderQ(){const {t,qs,i}=Q;const q=qs[i];
+  let body=`<div class="quiz"><div class="row" style="justify-content:space-between"><b style="color:${t.c}">${t.ic} ${t.name}</b><span class="small">Zadanie ${i+1} z ${qs.length}</span></div><div class="progress"><div style="width:${i/qs.length*100}%"></div></div><div class="qtext">${q.text}</div>`;
+  if(q.type==='choice')body+=`<div class="opts">${q.options.map((o,k)=>`<div class="opt" data-k="${k}">${o}</div>`).join('')}</div>`;
+  else body+=`<div class="row"><input class="qin" id="qin" inputmode="numeric" autocomplete="off" placeholder="?"></div>`;
+  body+=`<div id="qfb"></div><div class="row" style="justify-content:space-between;margin-top:16px"><button class="btn sec" onclick="quitTest()">✕ Zakończ</button><button class="btn big" id="qbtn">Sprawdź</button></div></div>`;
+  $('#quizBox').innerHTML=body;let chosen=null;
+  $$('.opt').forEach(o=>o.onclick=()=>{if(Q.locked)return;$$('.opt').forEach(x=>x.classList.remove('sel'));o.classList.add('sel');chosen=+o.dataset.k});
+  const inp=$('#qin');if(inp){inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#qbtn').click()})}
+  Q.locked=false;
+  $('#qbtn').onclick=()=>{
+    if(Q.locked){Q.i++;if(Q.i<qs.length)renderQ();else finish();return}
+    let ok,given;
+    if(q.type==='choice'){if(chosen===null)return;ok=chosen===q.correct;given=q.options[chosen];$$('.opt').forEach((o,k)=>{if(k===q.correct)o.classList.add('good');else if(k===chosen)o.classList.add('wrong')})}
+    else{const v=inp.value.trim();if(!v)return;const n=nums(v)[0];given=v;ok=q.check?q.check(n):n===q.ans&&nums(v).length===1;inp.style.borderColor=ok?'var(--green)':'var(--red)';inp.disabled=true}
+    Q.answers.push({q,ok,given});Q.locked=true;
+    const corr=q.type==='choice'?q.options[q.correct]:(q.check?`np. ${q.ans}`:q.ans);
+    $('#qfb').innerHTML=`<div class="expl ${ok?'ok':'bad'}"><b>${ok?pick(['Świetnie! ✓','Brawo! ✓','Dokładnie tak! ✓','Super! ✓']):'Nie tym razem. Poprawna odpowiedź: '+corr}</b><br>${q.expl}</div>`;
+    if(ok)burst(12);
+    $('#qbtn').textContent=Q.i+1<qs.length?'Dalej ▸':'Zobacz wynik 🏁';};
+}
+function quitTest(){showMenu()}
+function finish(){const {t,answers}=Q;const ok=answers.filter(a=>a.ok).length,n=answers.length,pc=Math.round(ok/n*100);
+  const grade=pc>=96?['celujący (6)',5]:pc>=85?['bardzo dobry (5)',4]:pc>=70?['dobry (4)',3]:pc>=50?['dostateczny (3)',2]:pc>=30?['dopuszczający (2)',1]:['niedostateczny (1)',0];
+  const best=store.get('best_'+t.id);if(best==null||pc>best)store.set('best_'+t.id,pc);
+  const secs=[...new Set(answers.filter(a=>!a.ok).map(a=>a.q.sec))].map(s=>TESTS.find(x=>x.id===s)).filter(Boolean);
+  $('#quizBox').innerHTML=`<div class="quiz"><h2 style="text-align:center;margin:0 0 8px">${t.ic} ${t.name} – wynik</h2><div class="score-big">${ok} / ${n}</div><div class="stars">${'★'.repeat(grade[1])}${'☆'.repeat(5-grade[1])}</div><div class="grade">${pc}% · ocena: ${grade[0]}</div>
+  <p id="sendStatus" class="small" style="text-align:center"></p>
+  ${secs.length?`<p style="text-align:center">Warto powtórzyć: ${secs.map(s=>`<a href="#${s.link}">${s.name}</a>`).join(', ')}</p>`:'<p style="text-align:center">Bezbłędnie! Jesteś mistrzem liczb! 🏆</p>'}
+  <div class="row" style="justify-content:center"><button class="btn big" onclick="startTest('${t.id}')">🔄 Nowy test (inne zadania)</button><button class="btn big sec" onclick="showMenu()">Wybierz inny test</button></div>
+  <div class="review"><h3>Przegląd odpowiedzi</h3>${answers.map((a,k)=>`<div class="it ${a.ok?'ok':'bad'}"><b>${k+1}.</b> ${a.q.text}<br>Twoja odpowiedź: <b>${esc(a.given)}</b> ${a.ok?'✓':'✗'}<br><span class="small">${a.q.expl}</span></div>`).join('')}</div></div>`;
+  const corr=q=>q.type==='choice'?q.options[q.correct]:q.ans;
+  sendResult({name:getName(),test:t.name,ok,n,pc,grade:grade[0],minutes:Math.round((Date.now()-Q.t0)/6000)/10,
+    mistakes:answers.map((a,k)=>a.ok?null:`${k+1}. ${plain(a.q.text)} → ${a.given} (poprawnie: ${plain(String(corr(a.q)))})`).filter(Boolean).join(' | ')});
+  if(pc>=70)burst(120);window.scrollTo({top:0})}
+window.startTest=startTest;window.showMenu=showMenu;window.quitTest=quitTest;
+showMenu();route();
+</script>
+</body>
+</html>
